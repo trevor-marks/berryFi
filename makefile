@@ -6,7 +6,8 @@ _INCLUDE=
 
 _LIB=
 
-OBJECTS= menu.o
+OBJECTS= menu.o \
+		main.o
 
 EXECUTABLE=PiPlayer.exe
 
@@ -32,14 +33,10 @@ main-build: $(OBJECTS) $(EXECUTABLE)
 
 
 %.o: %.cpp %.h
-	#@echo.
-	#@echo $@
 	$(CC) $(INCLUDE) -c $< -o $(PATH_OBJ)$@
 
 
 $(EXECUTABLE): $(OBJECTS)
-	#@echo.
-	#@echo $@
 	$(CC) $^ $(FLAGS) -o $@ $(LIB)
 
 
