@@ -1,15 +1,59 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "menu.h"
 
 
 void menu::update()
 {
+	system("cls");
+	switch (state)
+	{
+		//--------------------------------------------------------------------------------
+		case MAIN:
+			printf("screen: main\n");
+			break;
 
+		//--------------------------------------------------------------------------------
+		case FUNC:
+			printf("screen: funciton\n");
+
+			break;
+
+		//--------------------------------------------------------------------------------
+		case SETT:
+			printf("screen: settings\n");
+
+			break;
+
+		//--------------------------------------------------------------------------------
+		case LAPL:
+			printf("screen: load a playlist\n");
+
+			break;
+
+		//--------------------------------------------------------------------------------
+		case ELPL:
+			printf("screen: edit Queue\n");
+
+			break;
+
+		//--------------------------------------------------------------------------------
+		case EPLO:
+			printf("screen: edit playlist order\n");
+
+			break;
+
+		//--------------------------------------------------------------------------------
+		default:
+			printf("screen: ???\n");
+			break;
+	}
 }
 
 
-void menu::pushButton(_button button, _butMode mode)
+void menu::pushButton(_button button, _buttonMode mode)
 {
+	if (button == NOP) return;
 	_menuState NS = state;
 
 	// dedicated buttons here

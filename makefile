@@ -6,8 +6,8 @@ _INCLUDE=
 
 _LIB=
 
-OBJECTS= menu.o \
-		main.o
+OBJECTS= main.o menu.o
+		
 
 EXECUTABLE=PiPlayer.exe
 
