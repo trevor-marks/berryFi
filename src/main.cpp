@@ -40,7 +40,6 @@ int main()
 		if (strncmp(input, "QQ", 2) == 0) input_m = HOLD;
 
 		if (strncmp(input, "exit", 4)==0) flag = true;
-		
 		if (strncmp(input, "quit", 4)==0) flag = true;
 
 		Menu.pushButton(input_b, input_m);
