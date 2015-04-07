@@ -3,14 +3,33 @@
 #include "screen.h"
 
 
-void screen::drawText(char *text, int x, int y, int size)
+screen::screen(int Address)
 {
-	// do the things!
-
+	address = Address;
 }
 
 
-void screen::drawGraphic()
-{
 
+
+
+
+
+void clearBuffer()
+{
+	// clear the buffer
+}
+
+void drawText(char *text, int x, int y, int size, int font)
+{
+	// render text to buffer
+}
+
+void drawSprite(int x, int y, int compositeMode, int spriteIndex)
+{
+	// draw sprite to buffer
+}
+
+void updateScreen()
+{
+	// send buffer to screen
 }
