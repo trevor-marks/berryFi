@@ -8,6 +8,9 @@ class menu
 
 	_menuState state;
 
+	int scrollIndex;
+	int menuTimeout;
+
 	public:
 	void pushButton(_button button, _buttonMode mode);
 
