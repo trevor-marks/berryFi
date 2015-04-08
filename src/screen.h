@@ -4,7 +4,7 @@ class screen
 	private:
 		int address;
 
-		char buffer[128][8];
+		char buffer[8][128];
 
 		void i2c_start();
 		void i2c_stop();
@@ -14,7 +14,7 @@ class screen
 
 
 	public:
-		screen(int Address);
+		screen(int addr);
 
 
 		void clearBuffer();
