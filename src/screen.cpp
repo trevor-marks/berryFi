@@ -57,9 +57,19 @@ void screen::drawText(char *text, int x, int y, int size, int font)
 	int offset = 0;
 	while (*(text+offset) != '\n' && *(text+offset) != '\0')
 	{
-		// copy 6 byte font character into the buffer
-		memcpy(&buffer[y][x + offset * 6], &font6x8[*(text + offset) + 32], 6);
-		offset++;
+		if (font == 1)
+		{
+			// copy 6 byte font character into the buffer
+			memcpy(&buffer[y][x + offset * 6], &font6x8[(*(text + offset) - 32) * 6], 6);
+			offset++;
+		}
+		if (font == 2)
+		{
+			// copy 16 byte font character into the buffer
+			memcpy(&buffer[y    ][x + offset * 6], &font8x16[(*(text + offset) - 32) * 16    ], 8);
+			memcpy(&buffer[y + 1][x + offset * 6], &font8x16[(*(text + offset) - 32) * 16 + 8], 8);
+			offset++;
+		}
 	}
 }
 
