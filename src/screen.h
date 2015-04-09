@@ -10,7 +10,6 @@ class screen
 		void i2c_stop();
 		void i2c_writeCommand();
 		void i2c_writeBuffer();
-		void i2c_setBufferCursor();
 
 
 	public:
