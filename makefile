@@ -6,7 +6,7 @@ _INCLUDE=
 
 _LIB=
 
-OBJECTS= main.o menu.o
+OBJECTS= main.o menu.o screen.o
 		
 
 EXECUTABLE=PiPlayer.exe
@@ -27,9 +27,10 @@ all: pre-build main-build
 pre-build:
 	cls
 	-mkdir build
+	@echo.
 
 
-main-build: $(OBJECTS) $(EXECUTABLE)
+main-build: $(EXECUTABLE) $(OBJECTS) 
 
 
 %.o: %.cpp %.h
@@ -37,7 +38,7 @@ main-build: $(OBJECTS) $(EXECUTABLE)
 
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $^ $(FLAGS) -o $@ $(LIB)
+	$(CC) $(addprefix $(PATH_OBJ),$^) $(FLAGS) -o $@ $(LIB)
 
 
 .PHONY: all

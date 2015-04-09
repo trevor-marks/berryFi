@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include "screen.h"
 #include "sprites.h"
 
+const char sprites_num = 2;
+const int sprites[] = { (int)&sprite_1[0], (int)&sprite_2[0], };
 
 // 0xAE   display off
 // 0x20   Set Memory Addressing Mode	
@@ -41,13 +45,13 @@ screen::screen(int addr)
 }
 
 
-void clearBuffer()
+void screen::clearBuffer()
 {
 	// clear the buffer
 	memset(buffer, 0, 1024);
 }
 
-void drawText(char *text, int x, int y, int size, int font)
+void screen::drawText(char *text, int x, int y, int size, int font)
 {
 	// render text to buffer
 	int offset = 0;
@@ -59,12 +63,12 @@ void drawText(char *text, int x, int y, int size, int font)
 	}
 }
 
-void drawSprite(int x, int y, int compositeMode, int spriteIndex)
+void screen::drawSprite(int x, int y, int compositeMode, int spriteIndex)
 {
 	// draw sprite to buffer
 }
 
-void updateScreen()
+void screen::updateScreen()
 {
 	// send buffer to screen
 }

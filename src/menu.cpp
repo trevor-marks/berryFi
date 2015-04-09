@@ -3,6 +3,13 @@
 #include "menu.h"
 
 
+menu::menu()
+{
+	// default view init
+	view.current = ARTIST;
+	view.scroll = &view.artist;
+}
+
 void menu::update()
 {
 	system("cls");
@@ -98,12 +105,18 @@ void menu::pushButton(_button button, _buttonMode mode)
 			}
 			if (button == UP)
 			{
-				//if (mode == CLICK)		//> scroll up
+				if (mode == CLICK)			//> scroll up
+				{
+					if (view.scroll->index < view.scroll->size - 1) view.scroll->index++;
+				}
 				//if (mode == HOLD) 		//> browse out to artist/album list
 			}
 			if (button == DOWN)
 			{
-				//if (mode == CLICK)		//> scroll down
+				if (mode == CLICK)			//> scroll down
+				{
+					if (view.scroll->index > 0) view.scroll->index--;
+				}
 				//if (mode == HOLD) 		//> browse into album/track list
 			}
 			break;
