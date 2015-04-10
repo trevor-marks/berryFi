@@ -6,6 +6,7 @@ class screen
 
 		char buffer[8][128];
 
+		void i2c_write(char data);
 		void i2c_start();
 		void i2c_stop();
 		void i2c_writeCommand();
