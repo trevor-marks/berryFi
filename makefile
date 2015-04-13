@@ -6,7 +6,7 @@ _INCLUDE=
 
 _LIB=
 
-OBJECTS= main.o menu.o screen.o
+OBJECTS= main.o menu.o screen.o i2c.o
 		
 
 EXECUTABLE=berryFi.out
