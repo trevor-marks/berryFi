@@ -1,6 +1,8 @@
 #include "i2c.h"
 #include <stdio.h>
+#include <iostream.h>
 #include <fcntl.h>
+#include <linux/i2c.h>
 #include <linux/i2c-dev.h>
 
 int file;
