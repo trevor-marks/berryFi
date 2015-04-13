@@ -1,5 +1,5 @@
-static i2c_open(const char * deviceName);
-static i2c_close();
+static void i2c_open(const char * deviceName);
+static void i2c_close();
 static void i2c_addressSet(unsigned char address);
 static void i2c_writeByte(unsigned char command, unsigned char data);
 static unsigned char i2c_readByte(unsigned char command);
