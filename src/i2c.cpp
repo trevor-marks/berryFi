@@ -5,7 +5,7 @@
 
 int file;
 
-static i2c_open(const char * deviceName)
+static void i2c_open(const char * deviceName)
 {
 	file = open(deviceName, O_RDWR);
 	if (file == -1)
@@ -14,7 +14,7 @@ static i2c_open(const char * deviceName)
 	}
 }
 
-static i2c_close()
+static void i2c_close()
 {
 	close(file);
 }
