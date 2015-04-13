@@ -125,8 +125,8 @@ void screen::drawText(char *text, int x, int y, int size, int font)
 		if (font == 2)
 		{
 			// copy 16 byte font character into the buffer
-			memcpy(&buffer[y    ][x + offset * 6], &font8x16[(*(text + offset) - 32) * 16    ], 8);
-			memcpy(&buffer[y + 1][x + offset * 6], &font8x16[(*(text + offset) - 32) * 16 + 8], 8);
+			memcpy(&buffer[y    ][x + offset * 6], &font8X16[(*(text + offset) - 32) * 16    ], 8);
+			memcpy(&buffer[y + 1][x + offset * 6], &font8X16[(*(text + offset) - 32) * 16 + 8], 8);
 			offset++;
 		}
 	}
@@ -138,7 +138,7 @@ void screen::drawSprite(int x, int y, int compositeMode, int spriteIndex)
 
 	// get sprite pointer
 	char * sprite;
-	sprite = sprites[spriteIndex];
+	sprite = (char*)sprites[spriteIndex];
 
 	// get width / height
 	char width = sprite[0];

@@ -1,6 +1,7 @@
 # Compile Output Directory
 build/
 *.exe
+*.out
 
 # Sublime 3 Files
 *.sublime-project

@@ -1,4 +1,4 @@
-CC=g++
+CC=arm-linux-gnueabihf-gcc
 
 FLAGS= -static 
 
@@ -9,7 +9,7 @@ _LIB=
 OBJECTS= main.o menu.o screen.o
 		
 
-EXECUTABLE=PiPlayer.exe
+EXECUTABLE=berryFi.out
 
 PATH_OBJ=build/
 PATH_SRC=src/
@@ -25,9 +25,8 @@ vpath %.cpp $(PATH_SRC)
 all: pre-build main-build
 
 pre-build:
-	cls
-	-mkdir build
-	@echo.
+	clear
+	-mkdir -p build
 
 
 main-build: $(EXECUTABLE) $(OBJECTS) 
@@ -38,7 +37,7 @@ main-build: $(EXECUTABLE) $(OBJECTS)
 
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(addprefix $(PATH_OBJ),$^) $(FLAGS) -o $@ $(LIB)
+	$(CC) $^ $(FLAGS) -o $@ $(LIB)
 
 
 .PHONY: all
