@@ -1,6 +1,6 @@
 #include "i2c.h"
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
 #include <fcntl.h>
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
