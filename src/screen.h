@@ -6,7 +6,7 @@ class screen
 	private:
 		unsigned char address;
 
-		char buffer[8][128];
+		unsigned char buffer[8][128];
 
 		void writeBuffer();
 
