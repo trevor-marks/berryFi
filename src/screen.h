@@ -12,7 +12,7 @@ class screen
 
 
 	public:
-		screen(int addr);
+		screen(unsigned char addr);
 
 		void start();
 		void stop();

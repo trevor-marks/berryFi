@@ -35,6 +35,7 @@ static void i2c_setAddress(unsigned char address)
 		printf("Failed to set address.");
 	}
 }
+https://github.com/eidolonFIRE/berryFi.git
 
 static void i2c_writeByte(unsigned char value)
 {

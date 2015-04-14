@@ -21,7 +21,7 @@ screen::screen(unsigned char addr)
 void screen::start()
 {
 	i2c_open("/dev/i2c-1");
-	i2c_i2c_setAddress(address);
+	i2c_setAddress(address);
 
 	i2c_writeByte(0xAE); //display off
 	i2c_writeByte(0x00); //Set Memory Addressing Mode
@@ -55,13 +55,13 @@ void screen::start()
 
 void screen::stop()
 {
-	i2c_write(0xAE); //display off
+	i2c_writeByte(0xAE); //display off
 	i2c_close();
 }
 
 void screen::writeBuffer()
 {
-	i2c_writeBuffer(buffer, 1024);
+	i2c_writeBuffer(&buffer[0][0], 1024);
 }
 
 void screen::clearBuffer()
@@ -115,7 +115,7 @@ void screen::drawSprite(int x, int y, int compositeMode, int spriteIndex)
 void screen::updateScreen()
 {
 	// send buffer to screen
-	i2c_writeBuffer();
+	writeBuffer();
 	// clear buffer for next render
 	clearBuffer();
 }
