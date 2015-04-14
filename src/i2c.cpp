@@ -1,6 +1,5 @@
 #include "i2c.h"
 #include <stdio.h>
-#include <iostream>
 #include <fcntl.h>
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
@@ -12,7 +11,7 @@
 
 
 
-void i2c::open(const char * i2c_deviceName)
+void i2c::openDevice(const char * i2c_deviceName)
 {
 	i2c_device = open(i2c_deviceName, O_RDWR);
 	if (i2c_device == -1)
@@ -21,7 +20,7 @@ void i2c::open(const char * i2c_deviceName)
 	}
 }
 
-void i2c::close()
+void i2c::closeDevice()
 {
 	close(i2c_device);
 }

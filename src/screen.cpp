@@ -20,7 +20,7 @@ screen::screen(unsigned char addr)
 
 void screen::start()
 {
-	i2cdevice.open("/dev/i2c-1");
+	i2cdevice.openDevice("/dev/i2c-1");
 	i2cdevice.setAddress(address);
 
 	i2cdevice.writeByte(0xAE); //display off
@@ -56,7 +56,7 @@ void screen::start()
 void screen::stop()
 {
 	i2cdevice.writeByte(0xAE); //display off
-	i2cdevice.close();
+	i2cdevice.closeDevice();
 }
 
 void screen::writeBuffer()
