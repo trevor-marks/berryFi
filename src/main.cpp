@@ -4,7 +4,7 @@
 #include <string.h>
 
 menu Menu;
-
+i2c i2cdevice;
 
 int main()
 {

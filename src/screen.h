@@ -10,7 +10,7 @@ class screen
 
 		void writeBuffer();
 
-		i2c i2cdevice;
+		
 
 
 	public:

@@ -9,6 +9,7 @@
 const char sprites_num = 2;
 const int sprites[] = { (int)&sprite_1[0], (int)&sprite_2[0], };
 
+extern i2cdevice;
 
 
 screen::screen(unsigned char addr)
