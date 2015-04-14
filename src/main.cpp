@@ -1,5 +1,7 @@
 #include "main.h"
 #include "menu.h"
+#include "i2c.h"
+
 #include <stdio.h>
 #include <string.h>
 
