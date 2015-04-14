@@ -11,99 +11,58 @@ const int sprites[] = { (int)&sprite_1[0], (int)&sprite_2[0], };
 
 
 
-screen::screen(int addr)
+screen::screen(unsigned char addr)
 {
 	address = addr;
+	start();
 }
 
 
-void screen::i2c_write(char data)
+void screen::start()
 {
-	// i2c IO stuff here
-	// will write data to address
+	i2c_open("/dev/i2c-1");
+	i2c_i2c_setAddress(address);
+
+	i2c_writeByte(0xAE); //display off
+	i2c_writeByte(0x00); //Set Memory Addressing Mode
+	i2c_writeByte(0x10); //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
+	i2c_writeByte(0x40); //Set Page Start Address for Page Addressing Mode,0-7
+	i2c_writeByte(0x81); //Set COM Output Scan Direction
+	i2c_writeByte(0xCF); //---set low column address
+	i2c_writeByte(0xA1); //---set high column address
+	i2c_writeByte(0xC8); //--set start line address
+	i2c_writeByte(0xA6); //--set contrast control register
+	i2c_writeByte(0xA8); 
+	i2c_writeByte(0x3F); //--set segment re-map 0 to 127
+	i2c_writeByte(0xD3); //--set normal display
+	i2c_writeByte(0x00); //--set multiplex ratio(1 to 64)
+	i2c_writeByte(0xD5); //
+	i2c_writeByte(0x80); //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
+	i2c_writeByte(0xD9); //-set display offset
+	i2c_writeByte(0xF1); //-not offset
+	i2c_writeByte(0xDA); //--set display clock divide ratio/oscillator frequency
+	i2c_writeByte(0x12); //--set divide ratio
+	i2c_writeByte(0xDB); //--set pre-charge period
+	i2c_writeByte(0x40); //
+	i2c_writeByte(0x20); //--set com pins hardware configuration
+	i2c_writeByte(0x02); 
+	i2c_writeByte(0x8D); //--set vcomh
+	i2c_writeByte(0x14); //0x20,0.77xVcc
+	i2c_writeByte(0xA4); //--set DC-DC enable
+	i2c_writeByte(0xA6); //
+	i2c_writeByte(0xAF); //--turn on oled panel 
 }
 
-void screen::i2c_start()
-{
-	i2c_write(0xAE); //display off
-	i2c_write(0x00); //Set Memory Addressing Mode
-	i2c_write(0x10); //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
-	i2c_write(0x40); //Set Page Start Address for Page Addressing Mode,0-7
-	i2c_write(0x81); //Set COM Output Scan Direction
-	i2c_write(0xCF); //---set low column address
-	i2c_write(0xA1); //---set high column address
-	i2c_write(0xC8); //--set start line address
-	i2c_write(0xA6); //--set contrast control register
-	i2c_write(0xA8); 
-	i2c_write(0x3F); //--set segment re-map 0 to 127
-	i2c_write(0xD3); //--set normal display
-	i2c_write(0x00); //--set multiplex ratio(1 to 64)
-	i2c_write(0xD5); //
-	i2c_write(0x80); //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
-	i2c_write(0xD9); //-set display offset
-	i2c_write(0xF1); //-not offset
-	i2c_write(0xDA); //--set display clock divide ratio/oscillator frequency
-	i2c_write(0x12); //--set divide ratio
-	i2c_write(0xDB); //--set pre-charge period
-	i2c_write(0x40); //
-	i2c_write(0x20); //--set com pins hardware configuration
-	i2c_write(0x02); 
-	i2c_write(0x8D); //--set vcomh
-	i2c_write(0x14); //0x20,0.77xVcc
-	i2c_write(0xA4); //--set DC-DC enable
-	i2c_write(0xA6); //
-	i2c_write(0xAF); //--turn on oled panel 
-}
-
-void screen::i2c_stop()
+void screen::stop()
 {
 	i2c_write(0xAE); //display off
+	i2c_close();
 }
 
-void screen::i2c_writeCommand()
+void screen::writeBuffer()
 {
-	// 0xAE   display off
-	// 0x20   Set Memory Addressing Mode	
-	// 0x10   00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
-	// 0xb0   Set Page Start Address for Page Addressing Mode,0-7
-	// 0xc8   Set COM Output Scan Direction
-	// 0x00   ---set low column address
-	// 0x10   ---set high column address
-	// 0x40   --set start line address
-	// 0x81   --set contrast control register
-	// 0x7f   0xa1   --set segment re-map 0 to 127
-	// 0xa6   --set normal display
-	// 0xa8   --set multiplex ratio(1 to 64)
-	// 0x3F   
-	// 0xa4   0xa4,Output follows RAM content;0xa5,Output ignores RAM content
-	// 0xd3   -set display offset
-	// 0x00   -not offset
-	// 0xd5   --set display clock divide ratio/oscillator frequency
-	// 0xf0   --set divide ratio
-	// 0xd9   --set pre-charge period
-	// 0x22   
-	// 0xda   --set com pins hardware configuration
-	// 0x12   0xdb   --set vcomh
-	// 0x20   0x20,0.77xVcc
-	// 0x8d   --set DC-DC enable
-	// 0x14   
-	// 0xaf   --turn on oled panel
+	i2c_writeBuffer(buffer, 1024);
 }
-
-void screen::i2c_writeBuffer()
-{
-
-}
-
-
-
-
-
-
-
-
-
-
 
 void screen::clearBuffer()
 {
