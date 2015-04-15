@@ -16,7 +16,7 @@ void i2c::openDevice(const char * i2c_deviceName)
 	i2c_device = open(i2c_deviceName, O_RDWR);
 	if (i2c_device == -1)
 	{
-		printf("Failed to open i2c_device.");
+		printf("Failed to open i2c_device.\n");
 	}
 }
 
@@ -30,7 +30,7 @@ void i2c::setAddress(unsigned char address)
 	int result = ioctl(i2c_device, I2C_SLAVE, address);
 	if (result == -1)
 	{
-		printf("Failed to set address.");
+		printf("Failed to set address.\n");
 	}
 	writeByte(address);
 }
@@ -40,7 +40,7 @@ void i2c::writeByte(unsigned char value)
 	int result = write(i2c_device, &value, 1);
 	if (result == -1)
 	{
-		printf("Failed to write byte to I2C.");
+		printf("Failed to write byte to I2C.\n");
 	}
 }
 
@@ -51,6 +51,6 @@ void i2c::writeBuffer(unsigned char * buf, int length)
 	int result = write(i2c_device, buf, length);
 	if (result == -1)
 	{
-		printf("Failed to write byte to I2C.");
+		printf("Failed to write byte to I2C.\n");
 	}
 }

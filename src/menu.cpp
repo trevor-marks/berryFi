@@ -15,7 +15,7 @@ menu::menu()
 
 void menu::update()
 {
-	system("cls");
+	system("clear");
 	switch (state)
 	{
 		//--------------------------------------------------------------------------------
