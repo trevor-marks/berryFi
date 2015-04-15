@@ -14,12 +14,11 @@ class screen
 
 
 	public:
-		screen(unsigned char addr);
-
+		void setAddress(unsigned char addr);
 		void start();
 		void stop();
 		void clearBuffer();
-		void drawText(char *text, int x, int y, int size, int font);
+		void drawText(char *text, int x, int y, int font);
 		void drawSprite(int x, int y, int compositeMode, int spriteIndex);
 		void updateScreen();
 };

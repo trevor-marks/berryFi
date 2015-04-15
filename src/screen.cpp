@@ -12,10 +12,9 @@ const int sprites[] = { (int)&sprite_1[0], (int)&sprite_2[0], };
 extern i2c i2cdevice;
 
 
-screen::screen(unsigned char addr)
+void screen::setAddress(unsigned char addr)
 {
 	address = addr;
-	start();
 }
 
 
@@ -23,6 +22,7 @@ void screen::start()
 {
 	i2cdevice.openDevice("/dev/i2c-1");
 	i2cdevice.setAddress(address);
+
 
 	i2cdevice.writeByte(0xAE); //display off
 	i2cdevice.writeByte(0x00); //Set Memory Addressing Mode
@@ -71,7 +71,7 @@ void screen::clearBuffer()
 	memset(buffer, 0, 1024);
 }
 
-void screen::drawText(char *text, int x, int y, int size, int font)
+void screen::drawText(char *text, int x, int y, int font)
 {
 	// render text to buffer
 	int offset = 0;

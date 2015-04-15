@@ -8,6 +8,9 @@ menu::menu()
 	// default view init
 	view.current = ARTIST;
 	view.scroll = &view.artist;
+
+	topScreen.setAddress(0x78);
+	topScreen.start();
 }
 
 void menu::update()
@@ -18,6 +21,7 @@ void menu::update()
 		//--------------------------------------------------------------------------------
 		case MAIN:
 			printf("screen: main\n");
+			topScreen.drawText("screen: main", 0, 0, 1);
 			break;
 
 		//--------------------------------------------------------------------------------

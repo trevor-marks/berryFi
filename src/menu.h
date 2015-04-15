@@ -1,3 +1,4 @@
+#include "screen.h"
 
 enum _menuState {MAIN, FUNC, SETT, LAPL, ELPL, EPLO};
 enum _button {NOP, PLAY, MENU, NEXT, PREV, UP, DOWN, ADD, SUB};
@@ -25,6 +26,7 @@ class menu
 		int menuTimeout;
 		_menuState state;
 		_scrollMenus view;
+		screen topScreen;
 
 	public:
 		menu();
