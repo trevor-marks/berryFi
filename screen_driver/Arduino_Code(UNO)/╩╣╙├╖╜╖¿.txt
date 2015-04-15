@@ -1,4 +1,0 @@
-IIC_without_ACK是库文件，请将此文件夹复制到x:\arduino-1.5.5\libraries目录下
-你可以在http://www.14blog.com/archives/1358下载到最新版的库文件
-
-Demo_IIC是基于Arduino UNO的示例程序……正确接线并运行即可
