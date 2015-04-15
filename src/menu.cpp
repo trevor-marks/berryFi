@@ -21,7 +21,7 @@ void menu::update()
 		//--------------------------------------------------------------------------------
 		case MAIN:
 			printf("screen: main\n");
-			topScreen.drawText("screen: main", 0, 0, 1);
+			topScreen.drawText("screen: main\n", 0, 0, 1);
 			break;
 
 		//--------------------------------------------------------------------------------
@@ -59,6 +59,8 @@ void menu::update()
 			printf("screen: ???\n");
 			break;
 	}
+
+	topScreen.updateScreen();
 }
 
 
