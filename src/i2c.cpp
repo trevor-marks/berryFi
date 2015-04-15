@@ -32,6 +32,7 @@ void i2c::setAddress(unsigned char address)
 	{
 		printf("Failed to set address.");
 	}
+	writeByte(address);
 }
 
 void i2c::writeByte(unsigned char value)
@@ -45,7 +46,7 @@ void i2c::writeByte(unsigned char value)
 
 void i2c::writeBuffer(unsigned char * buf, int length)
 {
-	writeByte(address);
+	//writeByte(address);
 	writeByte(0x40);								// data command
 	int result = write(i2c_device, buf, length);
 	if (result == -1)

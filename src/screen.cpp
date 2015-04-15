@@ -56,12 +56,14 @@ void screen::start()
 
 void screen::stop()
 {
+	i2cdevice.setAddress(address);
 	i2cdevice.writeByte(0xAE); //display off
 	i2cdevice.closeDevice();
 }
 
 void screen::writeBuffer()
 {
+	i2cdevice.setAddress(address);
 	i2cdevice.writeBuffer(&buffer[0][0], 1024);
 }
 
