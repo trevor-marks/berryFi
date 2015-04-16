@@ -6,8 +6,24 @@
 #include "screen.h"
 #include "sprites.h"
 
+#define SCREEN_W = 128
+#define SCREEN_H = 8    	// 8 bytes... aka 64 pix
+
 const char sprites_num = 2;
-const int sprites[] = { (int)&sprite_1[0], (int)&sprite_2[0], };
+const char * sprites[] = 
+{ 
+	sprite_1, 
+	sprite_2,
+	shuffle
+	stop,
+	stop_after,
+	battery,
+	berryFi,
+	pause,
+	play,
+	repeat,
+	repeat_one,
+};
 
 extern i2c i2cdevice;
 
@@ -88,8 +104,8 @@ void screen::drawText(char *text, int x, int y, int font)
 		if (font == 2)
 		{
 			// copy 16 byte font character into the buffer
-			memcpy(&buffer[y    ][x + offset * 6], &font8X16[(*(text + offset) - 32) * 16    ], 8);
-			memcpy(&buffer[y + 1][x + offset * 6], &font8X16[(*(text + offset) - 32) * 16 + 8], 8);
+			memcpy(&buffer[y    ][x + offset * 8], &font8X16[(*(text + offset) - 32) * 16    ], 8);
+			memcpy(&buffer[y + 1][x + offset * 8], &font8X16[(*(text + offset) - 32) * 16 + 8], 8);
 			offset++;
 		}
 	}
@@ -101,16 +117,18 @@ void screen::drawSprite(int x, int y, int compositeMode, int spriteIndex)
 
 	// get sprite pointer
 	char * sprite;
-	sprite = (char*)sprites[spriteIndex];
+	sprite = sprites[spriteIndex];
 
 	// get width / height
 	char width = sprite[0];
 	char height = sprite[1];
 
+	if (x > SCREEN_W - width || y > SCREEN_H - height) return;
+
 	// render segments to buffer
 	for (int u = 0; u < height; u++)
 	{
-		memcpy(buffer, &sprite[2 + width * u], width);
+		memcpy(&buffer[u][x], &sprite[2 + width * u], width);
 	}
 
 }

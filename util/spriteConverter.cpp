@@ -75,8 +75,10 @@ int main(int argc, char **argv)
 		imgName = imgName.substr(imgName.find_last_of('\\') + 1, imgName.find_first_of('.') - imgName.find_last_of('\\') - 1);
 		
 		// pre output
-		fprintf(file, "\nconst char %s[] = \n{\n", imgName.c_str());
+		fprintf(file, "\nconst char %s[] = \n{\n\t//width height\n", imgName.c_str());
+		fprintf(file, "\t0x%02x, 0x%02x, \n", w, h / 8);
 
+		// pixel data
 		for (int scan = 0; scan < w * h / 8; scan++) 
 		{
 			if (scan % w == 0) fprintf(file, "\t");
