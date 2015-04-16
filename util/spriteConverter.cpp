@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <fstream>
 #include <iostream>
-#include <vector>
 #include <string.h>
 #include "lodepng.h"
 
@@ -19,9 +17,9 @@ int main(int argc, char **argv)
 		//==========================================================
 		//    Load Image File
 		//----------------------------------------------------------
-		unsigned char ** data;
+		unsigned char * data;
 		unsigned int w, h;
-		int error = lodepng_decode24_file(data, &w, &h, argv[img]);
+		int error = lodepng_decode24_file(&data, &w, &h, argv[img]);
 		int bitdepth = 3;
 
 		// If there's an error, display it.
@@ -31,55 +29,63 @@ int main(int argc, char **argv)
 			continue;		// skip to next image
 		}
 		else
-		printf("Image loaded: (%dx%d) %s\n", w, h, argv[img]);
+		printf("Image loaded: (%d x %d) %s\n", w, h, argv[img]);
 		
 
 		//==========================================================
 		//    Convert data
 		//----------------------------------------------------------
-		vector<unsigned char> output;
+		unsigned char *output = (unsigned char*)malloc(w * h / 8);
 		for (int y = 0; y < h; y+=8)
 		{
-			printf("y: %d\n", y);
 			for (int x = 0; x < w/bitdepth; x++)
 			{
-				printf("\tx: %d\n", x);
 				unsigned char vertpix = 0;
 				for (int z = 0; z < 8; z++)
 				{
-					printf("\t\tz: %d  ", z);
-					printf("data[%d][%d] == %x\n", x * bitdepth, y + z, data[0][y + z + x * bitdepth]);
-					if (data[0][y + z + x * bitdepth] > 0xA0) vertpix = vertpix | (0x01 << z); 
+					//printf("[%d][%d][%d] ", x, y, z);
+					int xx = x * bitdepth;
+					int yy = y + z;
+					int uv = xx + yy * (w*bitdepth);
+					//printf("data[%d][%d] == %x\n", xx, yy, data[uv]);
+					if (data[uv] > 0xA0) vertpix = vertpix | (0x01 << z); 
 				}
-				output.push_back(vertpix);
+				output[x + y * (w*bitdepth)] = vertpix;
 
 			}
-			printf("\n");
+			//printf("\n");
 		}
-		printf("\n\t... converted %d pixes\n", output.size()*8);
+		printf("\n\t... converted %d pixes\n", w * h);
+		free(data);
 
 		//==========================================================
 		//    Output Data to File
 		//----------------------------------------------------------
-		fstream file;
+		FILE *file;
 		string imgName = argv[img];
-		imgName.resize(imgName.size() - 3, 0);
+		imgName.resize(imgName.size() - 4, 0);
 		string outFileName = imgName + ".h";
-		file.open(outFileName.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+		file = fopen(outFileName.c_str(), "w");
+		if (file == NULL)
+		{
+			printf("Error: cannot open output file %s\n", outFileName.c_str());
+			continue;
+		}
 
 		// pre output
-		file << "\nconst char " << imgName << "[] = {\n";
+		fprintf(file, "\nconst char %s[] = \n{\n", imgName.c_str());
 
-		for (int scan = 0; scan < output.size(); scan++) 
+		for (int scan = 0; scan < w * h / 8; scan++) 
 		{
-			file << hex << output[scan] << ", ";
-			if (scan % w == w - 1) file << "\n";
+			if (scan % w == 0) fprintf(file, "\t");
+			fprintf(file, "0x%02x, ", output[scan]);
+			if (scan % w == w - 1) fprintf(file, "\n");
 		}
 
 		// post output
-		file << "\n};\n";
+		fprintf(file, "};\n");
 
-		file.close();
+		fclose(file);
 
 		printf("\t... output finished\n");
 	}
