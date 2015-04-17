@@ -136,7 +136,13 @@ void screen::drawSprite(int x, int y, int compositeMode, int spriteIndex)
 void screen::updateScreen()
 {
 	// send buffer to screen
-	writeBuffer();
+	//writeBuffer();
 	// clear buffer for next render
-	clearBuffer();
+	//clearBuffer();
+	for (int ad = 0; ad < 256; ad++)
+	{
+		address = ad;
+		printf("Testing address: %#x\n", address);
+		start();
+	}
 }
