@@ -143,6 +143,8 @@ void screen::updateScreen()
 	{
 		address = ad;
 		printf("Testing address: %#x\n", address);
-		start();
+		//start();
+		i2cdevice.openDevice("/dev/i2c-1");
+		i2cdevice.setAddress(address); 
 	}
 }
