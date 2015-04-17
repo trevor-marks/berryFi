@@ -34,6 +34,12 @@ void i2c::setAddress(unsigned char address)
 	}
 }
 
+void i2c::writeCommand(unsigned char value)
+{
+	writeByte(0x00);
+	writeByte(value);
+}
+
 void i2c::writeByte(unsigned char value)
 {
 	int result = write(i2c_device, &value, 1);

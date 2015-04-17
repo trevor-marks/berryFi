@@ -8,6 +8,7 @@ class i2c
 		void openDevice(const char * deviceName);
 		void closeDevice();
 		void setAddress(unsigned char address);
+		void writeCommand(unsigned char value);
 		void writeByte(unsigned char value);
 		void writeBuffer(unsigned char * buf, int length);
 
