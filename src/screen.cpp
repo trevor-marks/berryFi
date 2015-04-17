@@ -14,7 +14,7 @@ const char * sprites[] =
 { 
 	sprite_1, 
 	sprite_2,
-	shuffle
+	shuffle,
 	stop,
 	stop_after,
 	battery,
