@@ -10,7 +10,7 @@
 #define SCREEN_H 8    	// 8 bytes... aka 64 pix
 
 const char sprites_num = 2;
-const char * sprites[] = 
+char * sprites[] = 
 { 
 	sprite_1, 
 	sprite_2,
