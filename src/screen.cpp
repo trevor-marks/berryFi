@@ -6,8 +6,8 @@
 #include "screen.h"
 #include "sprites.h"
 
-#define SCREEN_W = 128
-#define SCREEN_H = 8    	// 8 bytes... aka 64 pix
+#define SCREEN_W 128
+#define SCREEN_H 8    	// 8 bytes... aka 64 pix
 
 const char sprites_num = 2;
 const char * sprites[] = 
