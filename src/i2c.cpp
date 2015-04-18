@@ -42,7 +42,7 @@ void i2c::writeCommand(unsigned char value)
 void i2c::writeByte(unsigned char value)
 {
 	//int result = write(i2c_device, &value, 1);
-	int result = i2c_smbus_write_byte(i2c_device, &value);
+	int result = i2c_smbus_write_byte(i2c_device, value);
 	if (result == -1)
 	{
 		printf("Failed to write byte to I2C %#x.\n", value);
@@ -58,7 +58,7 @@ void i2c::writeBuffer(unsigned char * buf, int length)
 	{
 		printf("Failed to write %d bytes to I2C.\n", length);
 	}*/
-	for (int l = 0; l < length)
+	for (int l = 0; l < length; l++)
 	{
 		writeByte(buf[l]);
 	}
