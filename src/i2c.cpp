@@ -35,7 +35,7 @@ void i2c::setAddress(unsigned char address)
 
 void i2c::writeCommand(unsigned char value)
 {
-	writeByte(0x00);
+	//writeByte(0x00);
 	writeByte(value);
 }
 
