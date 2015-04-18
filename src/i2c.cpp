@@ -1,7 +1,7 @@
 #include "i2c.h"
 #include <stdio.h>
 #include <fcntl.h>
-#include "i2c-dev.h"
+#include "i2c_dev.h"
 
 #include <sys/ioctl.h>
 #include <unistd.h>
