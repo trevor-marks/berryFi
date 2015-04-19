@@ -17,6 +17,8 @@ void i2c::openDevice(const char * i2c_deviceName)
 	{
 		printf("Failed to open %s.\n", i2c_deviceName);
 	}
+	else
+		printf("%s opened\n", i2c_device);
 }
 
 void i2c::closeDevice()
@@ -31,6 +33,8 @@ void i2c::setAddress(unsigned char address)
 	{
 		printf("Failed to set address %#x.\n", address);
 	}
+	else
+		printf("address set to: %d\n", address);
 }
 
 void i2c::writeCommand(unsigned char value)

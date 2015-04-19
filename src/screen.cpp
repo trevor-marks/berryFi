@@ -38,7 +38,7 @@ void screen::start()
 {
 	i2cdevice.openDevice("/dev/i2c-1");
 	i2cdevice.setAddress(address);
-
+	printf("device opened, address set, now configuring..\n");
 
 	i2cdevice.writeCommand(0xAE); //display off
 	i2cdevice.writeCommand(0x00); //Set Memory Addressing Mode
