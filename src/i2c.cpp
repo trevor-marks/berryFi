@@ -84,7 +84,7 @@ int i2c::writeByte_noAck(unsigned int addr, unsigned int offset, unsigned char *
 
 	i2cmsg.addr  = addr;
 	i2cmsg.flags = I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK;
-	i2cmsg.len   = 1+len;
+	i2cmsg.len   = 1;
 	i2cmsg.buf   = buf;
 
 	i = ioctl(i2c_device,I2C_RDWR,&msg_rdwr);
