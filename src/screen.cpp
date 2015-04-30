@@ -40,40 +40,40 @@ void screen::start()
 	i2cdevice.setAddress(address);
 	printf("device opened, address set, now configuring..\n");
 
-	i2cdevice.writeCommand(0xAE); //display off
-	i2cdevice.writeCommand(0x00); //Set Memory Addressing Mode
-	i2cdevice.writeCommand(0x10); //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
-	i2cdevice.writeCommand(0x40); //Set Page Start Address for Page Addressing Mode,0-7
-	i2cdevice.writeCommand(0x81); //Set COM Output Scan Direction
-	i2cdevice.writeCommand(0xCF); //---set low column address
-	i2cdevice.writeCommand(0xA1); //---set high column address
-	i2cdevice.writeCommand(0xC8); //--set start line address
-	i2cdevice.writeCommand(0xA6); //--set contrast control register
-	i2cdevice.writeCommand(0xA8); 
-	i2cdevice.writeCommand(0x3F); //--set segment re-map 0 to 127
-	i2cdevice.writeCommand(0xD3); //--set normal display
-	i2cdevice.writeCommand(0x00); //--set multiplex ratio(1 to 64)
-	i2cdevice.writeCommand(0xD5); //
-	i2cdevice.writeCommand(0x80); //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
-	i2cdevice.writeCommand(0xD9); //-set display offset
-	i2cdevice.writeCommand(0xF1); //-not offset
-	i2cdevice.writeCommand(0xDA); //--set display clock divide ratio/oscillator frequency
-	i2cdevice.writeCommand(0x12); //--set divide ratio
-	i2cdevice.writeCommand(0xDB); //--set pre-charge period
-	i2cdevice.writeCommand(0x40); //
-	i2cdevice.writeCommand(0x20); //--set com pins hardware configuration
-	i2cdevice.writeCommand(0x02); 
-	i2cdevice.writeCommand(0x8D); //--set vcomh
-	i2cdevice.writeCommand(0x14); //0x20,0.77xVcc
-	i2cdevice.writeCommand(0xA4); //--set DC-DC enable
-	i2cdevice.writeCommand(0xA6); //
-	i2cdevice.writeCommand(0xAF); //--turn on oled panel 
+	i2cdevice.writeByte_noAck(address, 0xAE, 1); //display off
+	i2cdevice.writeByte_noAck(address, 0x00, 1); //Set Memory Addressing Mode
+	i2cdevice.writeByte_noAck(address, 0x10, 1); //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
+	i2cdevice.writeByte_noAck(address, 0x40, 1); //Set Page Start Address for Page Addressing Mode,0-7
+	i2cdevice.writeByte_noAck(address, 0x81, 1); //Set COM Output Scan Direction
+	i2cdevice.writeByte_noAck(address, 0xCF, 1); //---set low column address
+	i2cdevice.writeByte_noAck(address, 0xA1, 1); //---set high column address
+	i2cdevice.writeByte_noAck(address, 0xC8, 1); //--set start line address
+	i2cdevice.writeByte_noAck(address, 0xA6, 1); //--set contrast control register
+	i2cdevice.writeByte_noAck(address, 0xA8, 1); 
+	i2cdevice.writeByte_noAck(address, 0x3F, 1); //--set segment re-map 0 to 127
+	i2cdevice.writeByte_noAck(address, 0xD3, 1); //--set normal display
+	i2cdevice.writeByte_noAck(address, 0x00, 1); //--set multiplex ratio(1 to 64)
+	i2cdevice.writeByte_noAck(address, 0xD5, 1); //
+	i2cdevice.writeByte_noAck(address, 0x80, 1); //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
+	i2cdevice.writeByte_noAck(address, 0xD9, 1); //-set display offset
+	i2cdevice.writeByte_noAck(address, 0xF1, 1); //-not offset
+	i2cdevice.writeByte_noAck(address, 0xDA, 1); //--set display clock divide ratio/oscillator frequency
+	i2cdevice.writeByte_noAck(address, 0x12, 1); //--set divide ratio
+	i2cdevice.writeByte_noAck(address, 0xDB, 1); //--set pre-charge period
+	i2cdevice.writeByte_noAck(address, 0x40, 1); //
+	i2cdevice.writeByte_noAck(address, 0x20, 1); //--set com pins hardware configuration
+	i2cdevice.writeByte_noAck(address, 0x02, 1); 
+	i2cdevice.writeByte_noAck(address, 0x8D, 1); //--set vcomh
+	i2cdevice.writeByte_noAck(address, 0x14, 1); //0x20,0.77xVcc
+	i2cdevice.writeByte_noAck(address, 0xA4, 1); //--set DC-DC enable
+	i2cdevice.writeByte_noAck(address, 0xA6, 1); //
+	i2cdevice.writeByte_noAck(address, 0xAF, 1); //--turn on oled panel 
 }
 
 void screen::stop()
 {
 	i2cdevice.setAddress(address);
-	i2cdevice.writeCommand(0xAE); //display off
+	i2cdevice.writeByte_noAck(0xAE); //display off
 	i2cdevice.closeDevice();
 }
 
