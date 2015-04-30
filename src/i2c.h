@@ -12,5 +12,5 @@ class i2c
 		void writeByte(unsigned char value);
 		void writeBuffer(unsigned char * buf, int length);
 
-		int writeByte_noAck(unsigned int addr, unsigned char *buf, unsigned char len);
+		int write_noAck(unsigned int addr, unsigned char *buf, unsigned char len);
 };
