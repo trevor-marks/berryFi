@@ -68,7 +68,7 @@ void screen::start()
 
 void screen::stop()
 {
-	i2cdevice.write_noAck(address, 0xAE); //display off
+	i2cdevice.write_command(address, 0xAE); //display off
 }
 
 void screen::writeBuffer()
