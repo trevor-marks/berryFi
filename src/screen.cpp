@@ -40,7 +40,7 @@ void screen::start()
 	//i2cdevice.setAddress(address);
 	printf("device opened, address set, now configuring..\n");
 
-	char config[] = 
+	unsigned char config[] = 
 	{
 		0xAE, //display off
 		0x00, //Set Memory Addressing Mode
@@ -78,7 +78,7 @@ void screen::start()
 void screen::stop()
 {
 	//i2cdevice.setAddress(address);
-	char off[] = {0xAE,};
+	unsigned char off[] = {0xAE,};
 	i2cdevice.write_noAck(address, off, 1); //display off
 	i2cdevice.closeDevice();
 }
