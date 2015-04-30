@@ -86,7 +86,7 @@ void screen::stop()
 void screen::writeBuffer()
 {
 	i2cdevice.setAddress(address);
-	i2cdevice.write_noAck(address, &buffer[0][0], 1024);
+	i2cdevice.write_noAck(address, (char*)&buffer[0][0], 1024);
 }
 
 void screen::clearBuffer()
