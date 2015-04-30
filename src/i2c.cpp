@@ -71,13 +71,13 @@ void i2c::writeBuffer(unsigned char * buf, int length)
 
 
 
-int i2c::write_noAck(unsigned int addr, unsigned char *buf, unsigned char len)
+int i2c::write_noAck(unsigned int addr, unsigned char *buf, int len)
 {
 	struct i2c_rdwr_ioctl_data msg_rdwr;
 	struct i2c_msg             i2cmsg;
 	int i;
 
-	if(len>1024) return -1;
+	if(len > 1024 || len < 0) return -1;
 
 	msg_rdwr.msgs = &i2cmsg;
 	msg_rdwr.nmsgs = 1;
