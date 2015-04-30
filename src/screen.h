@@ -10,12 +10,9 @@ class screen
 
 		void writeBuffer();
 
-		
-
 
 	public:
-		void setAddress(unsigned char addr);
-		void start();
+		void start(unsigned char addr);
 		void stop();
 		void clearBuffer();
 		void drawText(char *text, int x, int y, int font);

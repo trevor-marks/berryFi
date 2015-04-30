@@ -13,8 +13,8 @@
 #define PAGE_SIZE         (4*1024)
 #define BLOCK_SIZE        (4*1024)
 
-#define _scl 5
-#define _sda 6
+#define scl 5
+#define sda 6
 
 
 // GPIO setup macros. Always use INP_GPIO(x) before using OUT_GPIO(x) or SET_GPIO_ALT(x,y)
@@ -22,8 +22,8 @@
 #define OUT_GPIO(g) *(gpio+((g)/10)) |=  (1<<(((g)%10)*3))
 #define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
  
-#define GPIO_SET *(gpio+7)  // sets   bits which are 1 ignores bits which are 0
-#define GPIO_CLR *(gpio+10) // clears bits which are 1 ignores bits which are 0
+#define GPIO_SET(p) *(gpio+7)=1<<p  // sets   bits which are 1 ignores bits which are 0
+#define GPIO_CLR(p) *(gpio+10)=1<<p // clears bits which are 1 ignores bits which are 0
  
 #define GET_GPIO(g) (*(gpio+13)&(1<<g)) // 0 if LOW, (1<<g) if HIGH
  
@@ -31,7 +31,7 @@
 #define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
 
 
-i2c::i2c()
+io::io()
 {
 	// open /dev/mem
 	if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0) 
@@ -59,57 +59,57 @@ i2c::i2c()
 	gpio = (volatile unsigned *)gpio_map;
 
 	// set i2c pins to output
-	INP_GPIO(_scl);
-	INP_GPIO(_sda);
-	OUT_GPIO(_scl);
-	OUT_GPIO(_sda);
+	INP_GPIO(scl);
+	INP_GPIO(sda);
+	OUT_GPIO(scl);
+	OUT_GPIO(sda);
 }
 
 
-void i2c::start()
+void io::i2c_start()
 {
-	GPIO_SET = 1 << _scl;
+	GPIO_SET(scl);
 	usleep(500);
-	GPIO_SET = 1 << _sda;
+	GPIO_SET(sda);
 	usleep(500);
-	GPIO_CLR = 1 << _sda;
+	GPIO_CLR(sda);
 	usleep(500);
-	GPIO_CLR = 1 << _scl;
+	GPIO_CLR(scl);
 	usleep(500);
 }
 
-void i2c::stop()
+void io::i2c_stop()
 {
-	GPIO_CLR = 1 << _scl;
+	GPIO_CLR(scl);
 	usleep(500);
-	GPIO_CLR = 1 << _sda;
+	GPIO_CLR(sda);
 	usleep(500);
-	GPIO_SET = 1 << _scl;
+	GPIO_SET(scl);
 	usleep(500);
-	GPIO_SET = 1 << _sda;	
+	GPIO_SET(sda);	
 	usleep(500);
 }
 
-void i2c::byte(unsigned char byte)
+void io::i2c_byte(unsigned char byte)
 {
 	for (char bit = 0x00; bit < 0x10; bit<<1)
 	{
 		if (byte << bit & 0x80)
-			GPIO_SET = 1 << _sda;
+			GPIO_SET(sda);
 		else
-			GPIO_CLR = 1 << _sda;
+			GPIO_CLR(sda);
 		usleep(10);
-		GPIO_SET = 1 << _scl;
+		GPIO_SET(scl);
 		usleep(500);
-		GPIO_CLR = 1 << _scl;
+		GPIO_CLR(scl);
 		usleep(500);
 	}
 	// fake ack bit
-	GPIO_SET = 1 << _sda;
+	GPIO_SET(sda);
 	usleep(10);
-	GPIO_SET = 1 << _scl;
+	GPIO_SET(scl);
 	usleep(500);
-	GPIO_CLR = 1 << _scl;
+	GPIO_CLR(scl);
 	usleep(500);
 }
 
@@ -118,7 +118,7 @@ void i2c::byte(unsigned char byte)
 //    Custom i2c bit-bang code because LCD isn't 
 //    totally i2c compliant and doesn't support ACK'ing
 //----------------------------------------------------------
-void i2c::write(unsigned char addr, unsigned char * buf, int length)
+void io::i2c_write(unsigned char addr, unsigned char * buf, int length)
 {
 	start();
 	byte(addr);                                      // Write address
@@ -128,7 +128,7 @@ void i2c::write(unsigned char addr, unsigned char * buf, int length)
 }
 
 
-void i2c::write_command(unsigned char addr, unsigned char command)
+void io::i2c_write_command(unsigned char addr, unsigned char command)
 {
 	start();
 	address(addr);

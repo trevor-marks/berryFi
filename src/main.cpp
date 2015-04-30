@@ -6,7 +6,7 @@
 #include <string.h>
 
 menu Menu;
-i2c i2cdevice;
+io ioDevice;
 
 int main()
 {

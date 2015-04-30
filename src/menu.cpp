@@ -9,8 +9,7 @@ menu::menu()
 	view.current = ARTIST;
 	view.scroll = &view.artist;
 
-	topScreen.setAddress(0x3c);
-	topScreen.start();
+	topScreen.start(0x3c);
 }
 
 void menu::update()
