@@ -80,7 +80,7 @@ void screen::stop()
 void screen::writeBuffer()
 {
 	i2cdevice.setAddress(address);
-	i2cdevice.writeBuffer(&buffer[0][0], 128);
+	i2cdevice.writeBuffer(&buffer[0][0], 1024);
 }
 
 void screen::clearBuffer()
