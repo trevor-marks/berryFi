@@ -32,5 +32,6 @@ class menu
 		menu();
 		void pushButton(_button button, _buttonMode mode);
 		void update();
+		void exit();
 
 };

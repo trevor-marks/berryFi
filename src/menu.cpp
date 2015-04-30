@@ -12,6 +12,12 @@ menu::menu()
 	topScreen.start(0x3c);
 }
 
+
+void menu::exit()
+{
+	topScreen.stop();
+}
+
 void menu::update()
 {
 	system("clear");
