@@ -36,57 +36,44 @@ void screen::setAddress(unsigned char addr)
 
 void screen::start()
 {
-	i2cdevice.openDevice("/dev/i2c-1");
-	//i2cdevice.setAddress(address);
-	printf("device opened, address set, now configuring..\n");
-
-	char config[] = 
-	{
-		0xAE, //display off
-		0x00, //Set Memory Addressing Mode
-		0x10, //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
-		0x40, //Set Page Start Address for Page Addressing Mode,0-7
-		0x81, //Set COM Output Scan Direction
-		0xCF, //---set low column address
-		0xA1, //---set high column address
-		0xC8, //--set start line address
-		0xA6, //--set contrast control register
-		0xA8, 
-		0x3F, //--set segment re-map 0 to 127
-		0xD3, //--set normal display
-		0x00, //--set multiplex ratio(1 to 64)
-		0xD5, //
-		0x80, //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
-		0xD9, //-set display offset
-		0xF1, //-not offset
-		0xDA, //--set display clock divide ratio/oscillator frequency
-		0x12, //--set divide ratio
-		0xDB, //--set pre-charge period
-		0x40, //
-		0x20, //--set com pins hardware configuration
-		0x02, 
-		0x8D, //--set vcomh
-		0x14, //0x20,0.77xVcc
-		0xA4, //--set DC-DC enable
-		0xA6, //
-		0xAF, //--turn on oled panel 
-	};
-
-	i2cdevice.write_noAck(address, config, 28);
+	i2cdevice.write_command(address, 0xAE); //display off
+	i2cdevice.write_command(address, 0x00); //Set Memory Addressing Mode
+	i2cdevice.write_command(address, 0x10); //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
+	i2cdevice.write_command(address, 0x40); //Set Page Start Address for Page Addressing Mode,0-7
+	i2cdevice.write_command(address, 0x81); //Set COM Output Scan Direction
+	i2cdevice.write_command(address, 0xCF); //---set low column address
+	i2cdevice.write_command(address, 0xA1); //---set high column address
+	i2cdevice.write_command(address, 0xC8); //--set start line address
+	i2cdevice.write_command(address, 0xA6); //--set contrast control register
+	i2cdevice.write_command(address, 0xA8); 
+	i2cdevice.write_command(address, 0x3F); //--set segment re-map 0 to 127
+	i2cdevice.write_command(address, 0xD3); //--set normal display
+	i2cdevice.write_command(address, 0x00); //--set multiplex ratio(1 to 64)
+	i2cdevice.write_command(address, 0xD5); //
+	i2cdevice.write_command(address, 0x80); //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
+	i2cdevice.write_command(address, 0xD9); //-set display offset
+	i2cdevice.write_command(address, 0xF1); //-not offset
+	i2cdevice.write_command(address, 0xDA); //--set display clock divide ratio/oscillator frequency
+	i2cdevice.write_command(address, 0x12); //--set divide ratio
+	i2cdevice.write_command(address, 0xDB); //--set pre-charge period
+	i2cdevice.write_command(address, 0x40); //
+	i2cdevice.write_command(address, 0x20); //--set com pins hardware configuration
+	i2cdevice.write_command(address, 0x02); 
+	i2cdevice.write_command(address, 0x8D); //--set vcomh
+	i2cdevice.write_command(address, 0x14); //0x20,0.77xVcc
+	i2cdevice.write_command(address, 0xA4); //--set DC-DC enable
+	i2cdevice.write_command(address, 0xA6); //
+	i2cdevice.write_command(address, 0xAF); //--turn on oled panel 
 }
 
 void screen::stop()
 {
-	//i2cdevice.setAddress(address);
-	char off[] = {0xAE,};
-	i2cdevice.write_noAck(address, off, 1); //display off
-	i2cdevice.closeDevice();
+	i2cdevice.write_noAck(address, 0xAE); //display off
 }
 
 void screen::writeBuffer()
 {
-	i2cdevice.setAddress(address);
-	i2cdevice.write_noAck(address, (char*)&buffer[0][0], 1024);
+	i2cdevice.write(address, &buffer[0][0], 1024);
 }
 
 void screen::clearBuffer()
@@ -145,12 +132,4 @@ void screen::updateScreen()
 	writeBuffer();
 	// clear buffer for next render
 	clearBuffer();
-	/*for (int ad = 0; ad < 256; ad++)
-	{
-		address = ad;
-		printf("Testing address: %#x\n", address);
-		//start();
-		i2cdevice.openDevice("/dev/i2c-1");
-		i2cdevice.setAddress(address); 
-	}*/
 }

@@ -2,15 +2,16 @@
 class i2c
 {
 	private:
-		int i2c_device;
+		int  mem_fd;
+		void *gpio_map;
+		volatile unsigned *gpio;
+
+		void start();
+		void stop();
+		void byte(unsigned char byte);
 
 	public:
-		void openDevice(const char * deviceName);
-		void closeDevice();
-		void setAddress(unsigned char address);
-		void writeCommand(unsigned char value);
-		void writeByte(unsigned char value);
-		void writeBuffer(unsigned char * buf, int length);
-
-		int write_noAck(unsigned int addr, char *buf, short len);
+		i2c();
+		void write(unsigned char addr, unsigned char * buf, int length);
+		void write_command(unsigned char addr, unsigned char command);
 };

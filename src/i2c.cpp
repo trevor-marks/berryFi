@@ -1,92 +1,138 @@
 #include "i2c.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
-#include "i2c_dev.h"
-
+#include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
 
 
 
+#define BCM2708_PERI_BASE  0x20000000
+#define GPIO_BASE         (BCM2708_PERI_BASE + 0x200000)
+#define PAGE_SIZE         (4*1024)
+#define BLOCK_SIZE        (4*1024)
 
-void i2c::openDevice(const char * i2c_deviceName)
-{	
-	i2c_device = open(i2c_deviceName, O_RDWR);
-	if (i2c_device == -1)
+#define _scl 5
+#define _sda 6
+
+
+// GPIO setup macros. Always use INP_GPIO(x) before using OUT_GPIO(x) or SET_GPIO_ALT(x,y)
+#define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+#define OUT_GPIO(g) *(gpio+((g)/10)) |=  (1<<(((g)%10)*3))
+#define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
+ 
+#define GPIO_SET *(gpio+7)  // sets   bits which are 1 ignores bits which are 0
+#define GPIO_CLR *(gpio+10) // clears bits which are 1 ignores bits which are 0
+ 
+#define GET_GPIO(g) (*(gpio+13)&(1<<g)) // 0 if LOW, (1<<g) if HIGH
+ 
+#define GPIO_PULL *(gpio+37) // Pull up/pull down
+#define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
+
+
+i2c::i2c()
+{
+	// open /dev/mem
+	if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0) 
 	{
-		printf("Failed to open %s.\n", i2c_deviceName);
+		printf("can't open /dev/mem \n");
 	}
-	else
-		printf("%s opened\n", i2c_device);
-}
 
-void i2c::closeDevice()
-{
-	close(i2c_device);
-}
+	// mmap GPIO 
+	gpio_map = mmap(
+		NULL,                 // Any adddress in our space will do
+		BLOCK_SIZE,           // Map length
+		PROT_READ|PROT_WRITE, // Enable reading & writting to mapped memory
+		MAP_SHARED,           // Shared with other processes
+		mem_fd,               // File to map
+		GPIO_BASE);           // Offset to GPIO peripheral
 
-void i2c::setAddress(unsigned char address)
-{
+	close(mem_fd); // No need to keep mem_fd open after mmap
 
-	int result = ioctl(i2c_device, I2C_SLAVE, address);
-	if (result == -1)
+	if (gpio_map == MAP_FAILED) 
 	{
-		printf("Failed to set address %#x.\n", address);
+		printf("mmap error %d\n", (int)gpio_map); // errno also set!
 	}
-	else
-		printf("address set to: %d\n", address);
+
+	// Always use volatile pointer!
+	gpio = (volatile unsigned *)gpio_map;
+
+	// set i2c pins to output
+	INP_GPIO(_scl);
+	INP_GPIO(_sda);
+	OUT_GPIO(_scl);
+	OUT_GPIO(_sda);
 }
 
-void i2c::writeCommand(unsigned char value)
+
+void i2c::start()
 {
-	//writeByte(0x00);
-	//writeByte_noAck(value);
+	GPIO_SET = 1 << _scl;
+	usleep(500);
+	GPIO_SET = 1 << _sda;
+	usleep(500);
+	GPIO_CLR = 1 << _sda;
+	usleep(500);
+	GPIO_CLR = 1 << _scl;
+	usleep(500);
 }
 
-void i2c::writeByte(unsigned char value)
+void i2c::stop()
 {
-	//int result = write(i2c_device, &value, 1);
-	int result = i2c_smbus_write_byte(i2c_device, value);
-	if (result == -1)
+	GPIO_CLR = 1 << _scl;
+	usleep(500);
+	GPIO_CLR = 1 << _sda;
+	usleep(500);
+	GPIO_SET = 1 << _scl;
+	usleep(500);
+	GPIO_SET = 1 << _sda;	
+	usleep(500);
+}
+
+void i2c::byte(unsigned char byte)
+{
+	for (char bit = 0x00; bit < 0x10; bit<<1)
 	{
-		printf("Failed to write byte to I2C %#x.\n", value);
+		if (byte << bit & 0x80)
+			GPIO_SET = 1 << _sda;
+		else
+			GPIO_CLR = 1 << _sda;
+		usleep(10);
+		GPIO_SET = 1 << _scl;
+		usleep(500);
+		GPIO_CLR = 1 << _scl;
+		usleep(500);
 	}
-}
-
-void i2c::writeBuffer(unsigned char * buf, int length)
-{
-	//writeByte(address);
-	writeCommand(0x40);								// data command
-	/*int result = write(i2c_device, buf, length);
-	if (result == -1)
-	{
-		printf("Failed to write %d bytes to I2C.\n", length);
-	}*/
-	for (int l = 0; l < length; l++)
-	{
-		writeByte(buf[l]);
-	}
+	// fake ack bit
+	GPIO_SET = 1 << _sda;
+	usleep(10);
+	GPIO_SET = 1 << _scl;
+	usleep(500);
+	GPIO_CLR = 1 << _scl;
+	usleep(500);
 }
 
 
-
-
-int i2c::write_noAck(unsigned int addr, char *buf, short len)
+//==========================================================
+//    Custom i2c bit-bang code because LCD isn't 
+//    totally i2c compliant and doesn't support ACK'ing
+//----------------------------------------------------------
+void i2c::write(unsigned char addr, unsigned char * buf, int length)
 {
-	struct i2c_rdwr_ioctl_data msg_rdwr;
-	struct i2c_msg             i2cmsg;
-	int i;
+	start();
+	byte(addr);                                      // Write address
+	byte(0x40);                                      // Write data command
+	for (int i = 0; i < length; i++) byte(buf[i])    // Write data buffer
+	stop();
+}
 
-	if(len > 1024 || len < 0) return -1;
 
-	msg_rdwr.msgs = &i2cmsg;
-	msg_rdwr.nmsgs = 1;
-
-	i2cmsg.addr  = addr;
-	i2cmsg.flags = I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK;
-	i2cmsg.len   = 1+len;
-	i2cmsg.buf   = buf;
-
-	i = ioctl(i2c_device,I2C_RDWR,&msg_rdwr);
-	return i;
+void i2c::write_command(unsigned char addr, unsigned char command)
+{
+	start();
+	address(addr);
+	byte(0x00);                                      // write a zero to init a command
+	byte(command);                                   // write command
+	stop();
 }
