@@ -29,7 +29,7 @@ pre-build:
 	-mkdir -p build
 
 
-main-build: $(EXECUTABLE) $(OBJECTS) 
+main-build: $(OBJECTS) $(EXECUTABLE)  
 
 
 %.o: %.cpp %.h

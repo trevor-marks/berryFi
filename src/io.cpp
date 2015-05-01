@@ -90,11 +90,11 @@ void io::i2c_stop()
 	usleep(500);
 }
 
-void io::i2c_byte(unsigned char byte)
+void io::i2c_byte(char byte)
 {
-	for (char bit = 0x00; bit < 0x10; bit<<1)
+	for (char bit = 1; bit <= 0x80; bit<<1)
 	{
-		if (byte << bit & 0x80)
+		if (byte & bit)
 			GPIO_SET(sda);
 		else
 			GPIO_CLR(sda);
@@ -118,7 +118,7 @@ void io::i2c_byte(unsigned char byte)
 //    Custom i2c bit-bang code because LCD isn't 
 //    totally i2c compliant and doesn't support ACK'ing
 //----------------------------------------------------------
-void io::i2c_write(unsigned char addr, unsigned char * buf, int length)
+void io::i2c_write(unsigned char addr, char * buf, int length)
 {
 	start();
 	byte(addr);                                      // Write address
@@ -128,7 +128,7 @@ void io::i2c_write(unsigned char addr, unsigned char * buf, int length)
 }
 
 
-void io::i2c_write_command(unsigned char addr, unsigned char command)
+void io::i2c_write_command(unsigned char addr, char command)
 {
 	start();
 	address(addr);
