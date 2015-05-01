@@ -44,7 +44,7 @@ io::io()
 		printf("Error: can't open /dev/mem \n");
 	}
 
-	printf("mmap...")
+	printf("mmap...");
 	// mmap GPIO 
 	gpio_map = mmap(
 		NULL,                 // Any adddress in our space will do
