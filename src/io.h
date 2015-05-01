@@ -10,8 +10,7 @@ class io
 		int  mem_fd;
 		void *gpio_map;
 		volatile unsigned *gpio;
-		
-		io();
+
 		void i2c_write(unsigned char addr, char * buf, int length);
 		void i2c_write_command(unsigned char addr, char command);
 };

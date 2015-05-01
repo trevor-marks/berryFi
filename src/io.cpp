@@ -33,8 +33,8 @@
 
 
 
-io::io()
-{	
+void io::i2c_start()
+{
 	printf("opening /dev/mem ...\n");
 
 
@@ -71,11 +71,8 @@ io::io()
 	INP_GPIO(sda);
 	OUT_GPIO(scl);
 	OUT_GPIO(sda);
-}
 
 
-void io::i2c_start()
-{
 	GPIO_SET(scl);
 	usleep(500);
 	GPIO_SET(sda);
