@@ -11,9 +11,9 @@ io ioDevice;
 int main()
 {
 	printf("init...\n");
-	
-	io.init();
-	menu.init();
+
+	ioDevice.init();
+	Menu.init();
 
 	printf("\nwelcome!\n");
 
