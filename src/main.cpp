@@ -1,6 +1,6 @@
 #include "main.h"
 #include "menu.h"
-#include "i2c.h"
+#include "io.h"
 
 #include <stdio.h>
 #include <string.h>
