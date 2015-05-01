@@ -72,33 +72,31 @@ void io::init()
 	INP_GPIO(sda);
 	OUT_GPIO(scl);
 	OUT_GPIO(sda);
-
-	printf("init done...\n");
 }
 
 
 void io::i2c_start()
 {
 	GPIO_SET(scl);
-	usleep(500);
+	usleep(50);
 	GPIO_SET(sda);
-	usleep(500);
+	usleep(50);
 	GPIO_CLR(sda);
-	usleep(500);
+	usleep(50);
 	GPIO_CLR(scl);
-	usleep(500);
+	usleep(50);
 }
 
 void io::i2c_stop()
 {
 	GPIO_CLR(scl);
-	usleep(500);
+	usleep(50);
 	GPIO_CLR(sda);
-	usleep(500);
+	usleep(50);
 	GPIO_SET(scl);
-	usleep(500);
+	usleep(50);
 	GPIO_SET(sda);	
-	usleep(500);
+	usleep(50);
 }
 
 void io::i2c_byte(char byte)
@@ -111,17 +109,17 @@ void io::i2c_byte(char byte)
 			GPIO_CLR(sda);
 		usleep(10);
 		GPIO_SET(scl);
-		usleep(500);
+		usleep(50);
 		GPIO_CLR(scl);
-		usleep(500);
+		usleep(50);
 	}
 	// fake ack bit
 	GPIO_SET(sda);
 	usleep(10);
 	GPIO_SET(scl);
-	usleep(500);
+	usleep(50);
 	GPIO_CLR(scl);
-	usleep(500);
+	usleep(50);
 }
 
 
@@ -131,6 +129,7 @@ void io::i2c_byte(char byte)
 //----------------------------------------------------------
 void io::i2c_write(unsigned char addr, char * buf, int length)
 {
+	printf("io.write\n");
 	i2c_start();
 	i2c_byte(addr);                                      // Write address
 	i2c_byte(0x40);                                      // Write data command
@@ -141,6 +140,7 @@ void io::i2c_write(unsigned char addr, char * buf, int length)
 
 void io::i2c_write_command(unsigned char addr, char command)
 {
+	printf("io.command\n");
 	i2c_start();
 	i2c_byte(addr);
 	i2c_byte(0x00);                                      // write a zero to init a command

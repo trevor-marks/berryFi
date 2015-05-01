@@ -61,6 +61,8 @@ void screen::start(unsigned char addr)
 	ioDevice.i2c_write_command(address, 0xA4); //--set DC-DC enable
 	ioDevice.i2c_write_command(address, 0xA6); //
 	ioDevice.i2c_write_command(address, 0xAF); //--turn on oled panel 
+
+	printf("screen setup done...\n");
 }
 
 void screen::stop()
