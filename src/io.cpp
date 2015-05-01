@@ -31,6 +31,11 @@
 #define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
 
 
+int  mem_fd;
+void *gpio_map;
+volatile unsigned *gpio;
+
+
 io::io()
 {
 	// open /dev/mem
