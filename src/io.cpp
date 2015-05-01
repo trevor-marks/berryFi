@@ -22,8 +22,8 @@
 #define OUT_GPIO(g) *(gpio+((g)/10)) |=  (1<<(((g)%10)*3))
 #define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
  
-#define GPIO_SET(p) *(gpio+7)=1<<p  // sets   bits which are 1 ignores bits which are 0
-#define GPIO_CLR(p) *(gpio+10)=1<<p // clears bits which are 1 ignores bits which are 0
+#define GPIO_SET(p) *(gpio+7)=1<<(p)  // sets   bits which are 1 ignores bits which are 0
+#define GPIO_CLR(p) *(gpio+10)=1<<(p) // clears bits which are 1 ignores bits which are 0
  
 #define GET_GPIO(g) (*(gpio+13)&(1<<g)) // 0 if LOW, (1<<g) if HIGH
  
@@ -31,19 +31,20 @@
 #define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
 
 
-int  mem_fd;
-void *gpio_map;
-volatile unsigned *gpio;
 
 
 io::io()
-{
+{	
+	printf("opening /dev/mem ...\n");
+
+
 	// open /dev/mem
 	if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0) 
 	{
-		printf("can't open /dev/mem \n");
+		printf("Error: can't open /dev/mem \n");
 	}
 
+	printf("mmap...")
 	// mmap GPIO 
 	gpio_map = mmap(
 		NULL,                 // Any adddress in our space will do
@@ -57,12 +58,14 @@ io::io()
 
 	if (gpio_map == MAP_FAILED) 
 	{
-		printf("mmap error %d\n", (int)gpio_map); // errno also set!
+		printf("Error: mmap error %d\n", (int)gpio_map); // errno also set!
 	}
 
+	printf("map gpio pointer...\n");
 	// Always use volatile pointer!
 	gpio = (volatile unsigned *)gpio_map;
 
+	printf("setting up i2c pins...\n");
 	// set i2c pins to output
 	INP_GPIO(scl);
 	INP_GPIO(sda);
