@@ -13,8 +13,8 @@
 #define PAGE_SIZE         (4*1024)
 #define BLOCK_SIZE        (4*1024)
 
-#define scl 5
-#define sda 6
+#define scl 6
+#define sda 5
 
 
 // GPIO setup macros. Always use INP_GPIO(x) before using OUT_GPIO(x) or SET_GPIO_ALT(x,y)
@@ -105,7 +105,7 @@ void io::i2c_byte(char byte)
 {
 	for (char bit = 0; bit < 8; bit++)
 	{
-		if ((byte << bit) & 0x80 != 0)
+		if ((byte << bit) & 0x80 == 0)
 			GPIO_CLR(sda);
 		else
 			GPIO_SET(sda);
