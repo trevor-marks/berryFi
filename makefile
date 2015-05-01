@@ -6,7 +6,7 @@ _INCLUDE=
 
 _LIB=
 
-OBJECTS= main.o menu.o screen.o i2c.o
+OBJECTS= main.o menu.o screen.o io.o
 		
 
 EXECUTABLE=berryFi.out
@@ -44,4 +44,4 @@ $(EXECUTABLE): $(OBJECTS)
 
 
 clean: 
-	del build
+	rm build/*
