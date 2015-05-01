@@ -120,19 +120,19 @@ void io::i2c_byte(char byte)
 //----------------------------------------------------------
 void io::i2c_write(unsigned char addr, char * buf, int length)
 {
-	start();
-	byte(addr);                                      // Write address
-	byte(0x40);                                      // Write data command
-	for (int i = 0; i < length; i++) byte(buf[i])    // Write data buffer
-	stop();
+	i2c_start();
+	i2c_byte(addr);                                      // Write address
+	i2c_byte(0x40);                                      // Write data command
+	for (int i = 0; i < length; i++) i2c_byte(buf[i]);   // Write data buffer
+	i2c_stop();
 }
 
 
 void io::i2c_write_command(unsigned char addr, char command)
 {
-	start();
-	address(addr);
-	byte(0x00);                                      // write a zero to init a command
-	byte(command);                                   // write command
-	stop();
+	i2c_start();
+	i2c_byte(addr);
+	i2c_byte(0x00);                                      // write a zero to init a command
+	i2c_byte(command);                                   // write command
+	i2c_stop();
 }
