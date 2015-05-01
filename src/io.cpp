@@ -104,9 +104,9 @@ void io::i2c_stop()
 void io::i2c_byte(char byte)
 {
 	printf("\ti2c_byte  %#02x\n", byte);
-	for (char bit = 1; bit <= 0x80; bit<<1)
+	for (char bit = 0; bit < 8; bit++)
 	{
-		if (byte & bit == 0)
+		if (byte & (0x01 << bit) == 0)
 			GPIO_CLR(sda);
 		else
 			GPIO_SET(sda);
