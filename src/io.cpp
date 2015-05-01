@@ -103,14 +103,13 @@ void io::i2c_stop()
 
 void io::i2c_byte(char byte)
 {
-	printf("\ti2c_byte  %#02x\n", byte);
 	for (char bit = 0; bit < 8; bit++)
 	{
-		if (byte & (0x01 << bit) == 0)
+		if ((byte << bit) & 0x80) == 0)
 			GPIO_CLR(sda);
 		else
 			GPIO_SET(sda);
-		usleep(10);
+		usleep(50);
 		GPIO_SET(scl);
 		usleep(50);
 		GPIO_CLR(scl);
@@ -118,7 +117,7 @@ void io::i2c_byte(char byte)
 	}
 	// fake ack bit
 	GPIO_SET(sda);
-	usleep(10);
+	usleep(50);
 	GPIO_SET(scl);
 	usleep(50);
 	GPIO_CLR(scl);
