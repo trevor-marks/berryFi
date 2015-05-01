@@ -77,6 +77,7 @@ void io::init()
 
 void io::i2c_start()
 {
+	printf("\ti2c_start\n");
 	GPIO_SET(scl);
 	usleep(50);
 	GPIO_SET(sda);
@@ -89,6 +90,7 @@ void io::i2c_start()
 
 void io::i2c_stop()
 {
+	printf("\ti2c_stop\n");
 	GPIO_CLR(scl);
 	usleep(50);
 	GPIO_CLR(sda);
@@ -101,12 +103,13 @@ void io::i2c_stop()
 
 void io::i2c_byte(char byte)
 {
+	printf("\ti2c_byte  %#02x\n", byte);
 	for (char bit = 1; bit <= 0x80; bit<<1)
 	{
-		if (byte & bit)
-			GPIO_SET(sda);
-		else
+		if (byte & bit == 0)
 			GPIO_CLR(sda);
+		else
+			GPIO_SET(sda);
 		usleep(10);
 		GPIO_SET(scl);
 		usleep(50);
