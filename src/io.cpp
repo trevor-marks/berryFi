@@ -105,7 +105,7 @@ void io::i2c_byte(char byte)
 {
 	for (char bit = 0; bit < 8; bit++)
 	{
-		if ((byte << bit) & 0x80) == 0)
+		if ((byte << bit) & 0x80 == 0)
 			GPIO_CLR(sda);
 		else
 			GPIO_SET(sda);
