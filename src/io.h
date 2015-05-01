@@ -11,6 +11,7 @@ class io
 		void *gpio_map;
 		volatile unsigned *gpio;
 
+		void init();
 		void i2c_write(unsigned char addr, char * buf, int length);
 		void i2c_write_command(unsigned char addr, char command);
 };

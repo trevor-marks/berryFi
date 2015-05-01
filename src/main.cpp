@@ -10,6 +10,11 @@ io ioDevice;
 
 int main()
 {
+	printf("init...\n");
+	
+	io.init();
+	menu.init();
+
 	printf("\nwelcome!\n");
 
 	while (1)

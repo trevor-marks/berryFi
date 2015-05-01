@@ -3,8 +3,10 @@
 #include "menu.h"
 
 
-menu::menu()
+
+void menu::init()
 {
+	printf("------\nmenu init...\n");
 	// default view init
 	view.current = ARTIST;
 	view.scroll = &view.artist;

@@ -30,6 +30,8 @@ extern io ioDevice;
 
 void screen::start(unsigned char addr)
 {
+	printf("------\nscreen start (%#x)...\n", addr);
+
 	address = addr;
 	ioDevice.i2c_write_command(address, 0xAE); //display off
 	ioDevice.i2c_write_command(address, 0x00); //Set Memory Addressing Mode

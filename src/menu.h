@@ -29,7 +29,7 @@ class menu
 		screen topScreen;
 
 	public:
-		menu();
+		void init();
 		void pushButton(_button button, _buttonMode mode);
 		void update();
 		void exit();

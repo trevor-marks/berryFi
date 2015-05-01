@@ -33,8 +33,9 @@
 
 
 
-void io::i2c_start()
+void io::init()
 {
+	printf("------\nio init...\n");
 	printf("opening /dev/mem ...\n");
 
 
@@ -44,7 +45,7 @@ void io::i2c_start()
 		printf("Error: can't open /dev/mem \n");
 	}
 
-	printf("mmap...");
+	printf("mmap...\n");
 	// mmap GPIO 
 	gpio_map = mmap(
 		NULL,                 // Any adddress in our space will do
@@ -72,7 +73,12 @@ void io::i2c_start()
 	OUT_GPIO(scl);
 	OUT_GPIO(sda);
 
+	printf("init done...\n");
+}
 
+
+void io::i2c_start()
+{
 	GPIO_SET(scl);
 	usleep(500);
 	GPIO_SET(sda);

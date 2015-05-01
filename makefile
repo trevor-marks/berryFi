@@ -4,7 +4,6 @@ FLAGS= -static
 
 _INCLUDE=
 
-_LIB=
 
 OBJECTS= main.o menu.o screen.o io.o
 		
@@ -15,7 +14,7 @@ PATH_OBJ=build/
 PATH_SRC=src/
 
 INCLUDE=$(addprefix -I, $(_INCLUDE))
-LIB=$(addprefix -L, $(_LIB))
+
 
 
 vpath %.o $(PATH_OBJ)
@@ -37,7 +36,7 @@ main-build: $(OBJECTS) $(EXECUTABLE)
 
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $^ $(FLAGS) -o $@ $(LIB)
+	$(CC) $(addprefix $(PATH_OBJ),$(OBJECTS)) $(FLAGS) -o $@ $(LIB)
 
 post-build:
 	cp $(EXECUTABLE) /media/sf_vmshare/$(EXECUTABLE)
