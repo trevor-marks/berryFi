@@ -107,7 +107,7 @@ void io::i2c_byte(unsigned char data)
 	printf("data(%#x) ", data);
 	for (unsigned char bit = 0x80; bit != 0x00; bit>>1)
 	{
-		if (data & bit) == 0x00)
+		if (data & bit == 0x00)
 		{
 			printf("0");
 			GPIO_CLR(sda);
