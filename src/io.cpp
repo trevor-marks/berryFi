@@ -104,11 +104,11 @@ void io::i2c_stop()
 
 void io::i2c_byte(unsigned char data)
 {
-	int data2 = data;
 	printf("data(%#x) ", data2);
 	for (int bit = 0; bit < 8; bit++)
 	{
-		if (data2 & (0x00000080 >> bit) == 0)
+		printf(" mask(%#x) ", 0x80 >> bit);
+		if (data2 & (0x80 >> bit) == 0)
 		{
 			printf("0");
 			GPIO_CLR(sda);
