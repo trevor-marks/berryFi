@@ -102,19 +102,19 @@ void io::i2c_stop()
 	usleep(50);
 }
 
-void io::i2c_byte(char data)
+void io::i2c_byte(unsigned char data)
 {
 	printf("data(%#x) ", data);
 	for (char bit = 0; bit < 8; bit++)
 	{
-		if ((data << bit) & 0x80 == 0)
+		if (data << bit) & 0x80 == 0)
 		{
-			printf("1");
+			printf("0");
 			GPIO_CLR(sda);
 		}
 		else
 		{
-			printf("0");
+			printf("1");
 			GPIO_SET(sda);
 		}
 		usleep(10);
@@ -149,7 +149,7 @@ void io::i2c_write(unsigned char addr, char * buf, int length)
 }
 
 
-void io::i2c_write_command(unsigned char addr, char command)
+void io::i2c_write_command(unsigned char addr, unsigned char command)
 {
 	printf("io.command\n");
 	i2c_start();
