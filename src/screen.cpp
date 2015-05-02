@@ -78,7 +78,7 @@ void screen::writeBuffer()
 void screen::clearBuffer()
 {
 	// clear the buffer
-	memset(buffer, 0, 1024);
+	memset(buffer, 0, 24);
 }
 
 void screen::drawText(char *text, int x, int y, int font)

@@ -69,8 +69,9 @@ void io::init()
 	printf("setting up i2c pins...\n");
 	// set i2c pins to output
 	INP_GPIO(scl);
-	INP_GPIO(sda);
 	OUT_GPIO(scl);
+	
+	INP_GPIO(sda);
 	OUT_GPIO(sda);
 }
 
@@ -107,10 +108,12 @@ void io::i2c_byte(char byte)
 	{
 		if ((byte << bit) & 0x80 == 0)
 		{
+			printf("1");
 			GPIO_CLR(sda);
 		}
 		else
 		{
+			printf("0");
 			GPIO_SET(sda);
 		}
 		usleep(10);
@@ -119,6 +122,7 @@ void io::i2c_byte(char byte)
 		GPIO_CLR(scl);
 		usleep(50);
 	}
+	printf("\n");
 	// fake ack bit
 	GPIO_SET(sda);
 	usleep(10);
