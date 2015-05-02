@@ -102,11 +102,12 @@ void io::i2c_stop()
 	usleep(50);
 }
 
-void io::i2c_byte(char byte)
+void io::i2c_byte(char data)
 {
+	printf("data(%#x) ", data);
 	for (char bit = 0; bit < 8; bit++)
 	{
-		if ((byte << bit) & 0x80 == 0)
+		if ((data << bit) & 0x80 == 0)
 		{
 			printf("1");
 			GPIO_CLR(sda);

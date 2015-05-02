@@ -4,7 +4,7 @@ class io
 	private:
 		void i2c_start();
 		void i2c_stop();
-		void i2c_byte(char byte);
+		void i2c_byte(char data);
 
 	public:
 		int  mem_fd;
