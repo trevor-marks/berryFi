@@ -30,8 +30,6 @@
 #define GPIO_PULL *(gpio+37) // Pull up/pull down
 #define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
 
-static unsigned char bitmask[] = {0x80, 0x40, 0x20, 0x01, 0x08, 0x04, 0x02, 0x01};
-
 
 void io::init()
 {
@@ -80,16 +78,20 @@ void io::i2c_start()
 {
 	GPIO_SET(scl);
 	GPIO_SET(sda);
+	usleep(1);
 	GPIO_CLR(sda);
 	GPIO_CLR(scl);
+	usleep(1);
 }
 
 void io::i2c_stop()
 {
 	GPIO_CLR(scl);
 	GPIO_CLR(sda);
+	usleep(1);
 	GPIO_SET(scl);
 	GPIO_SET(sda);	
+	usleep(1);
 }
 
 
@@ -99,7 +101,7 @@ void io::i2c_byte(unsigned char data)
 {
 	for (char bit = 0; bit < 8; bit++)
 	{
-		unsigned char temp = data & bitmask[bit];
+		unsigned char temp = data & (0x80 >> bit);
 		if (temp == 0)
 		{
 			GPIO_CLR(sda);
@@ -111,6 +113,7 @@ void io::i2c_byte(unsigned char data)
 		GPIO_SET(scl);
 		usleep(1);
 		GPIO_CLR(scl);
+		usleep(1);
 	}
 	// fake ack bit
 	GPIO_SET(sda);
