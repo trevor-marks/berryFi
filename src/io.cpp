@@ -30,7 +30,7 @@
 #define GPIO_PULL *(gpio+37) // Pull up/pull down
 #define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
 
-
+static unsigned char bitmask = {0x80, 0x40, 0x20, 0x01, 0x08, 0x04, 0x02, 0x01};
 
 
 void io::init()
@@ -107,7 +107,7 @@ void io::i2c_byte(unsigned char data)
 	printf("data(%#x) ", data);
 	for (char bit = 0; bit < 8; bit++)
 	{
-		if (data & (0x80 >> bit) == 0)
+		if (data & bitmask[bit] == 0)
 		{
 			printf("0");
 			GPIO_CLR(sda);
