@@ -1,6 +1,6 @@
 CC=arm-linux-gnueabihf-gcc
 
-FLAGS= -static 
+FLAGS= -static -Os
 
 _INCLUDE=
 
