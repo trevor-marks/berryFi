@@ -80,27 +80,30 @@ void io::i2c_start()
 {
 	printf("\ti2c_start\n");
 	GPIO_SET(scl);
-	usleep(50);
+	usleep(5);
 	GPIO_SET(sda);
-	usleep(50);
+	usleep(5);
 	GPIO_CLR(sda);
-	usleep(50);
+	usleep(5);
 	GPIO_CLR(scl);
-	usleep(50);
+	usleep(5);
 }
 
 void io::i2c_stop()
 {
 	printf("\ti2c_stop\n");
 	GPIO_CLR(scl);
-	usleep(50);
+	usleep(5);
 	GPIO_CLR(sda);
-	usleep(50);
+	usleep(5);
 	GPIO_SET(scl);
-	usleep(50);
+	usleep(5);
 	GPIO_SET(sda);	
-	usleep(50);
+	usleep(5);
 }
+
+
+
 
 void io::i2c_byte(unsigned char data)
 {
@@ -128,6 +131,18 @@ void io::i2c_byte(unsigned char data)
 	usleep(5);
 	GPIO_CLR(scl);
 	usleep(5);
+}
+
+void io::i2c_setPos(unsigned char addr, unsigned char x, unsigned char y)
+{
+	printf("io.setPos\n");
+	i2c_start();
+	i2c_byte(addr);
+	i2c_byte(0x00);
+	i2c_byte(0xb0+y);
+	i2c_byte(((x&0xf0)>>4)|0x10);
+	i2c_byte((x&0x0f)|0x01);
+	i2c_stop();
 }
 
 
