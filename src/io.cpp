@@ -71,6 +71,9 @@ void io::init()
 	
 	INP_GPIO(sda);
 	OUT_GPIO(sda);
+
+	GPIO_SET(scl);
+	GPIO_SET(sda);
 }
 
 
@@ -101,7 +104,7 @@ void io::i2c_byte(unsigned char data)
 {
 	for (char bit = 0; bit < 8; bit++)
 	{
-		unsigned char temp = data & (0x80 >> bit);
+		unsigned char temp = data & (0x01 << bit);
 		if (temp == 0)
 		{
 			GPIO_CLR(sda);
