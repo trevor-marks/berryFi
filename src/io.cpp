@@ -104,18 +104,15 @@ void io::i2c_stop()
 
 void io::i2c_byte(unsigned char data)
 {
-	printf("data(%#x) ", data);
 	for (char bit = 0; bit < 8; bit++)
 	{
 		unsigned char temp = data & bitmask[bit];
 		if (temp == 0)
 		{
-			printf("0");
 			GPIO_CLR(sda);
 		}
 		else
 		{
-			printf("1");
 			GPIO_SET(sda);
 		}
 		usleep(10);
@@ -124,7 +121,6 @@ void io::i2c_byte(unsigned char data)
 		GPIO_CLR(scl);
 		usleep(50);
 	}
-	printf("\n");
 	// fake ack bit
 	GPIO_SET(sda);
 	usleep(10);
