@@ -110,6 +110,7 @@ void io::i2c_byte(unsigned char data)
 		{
 			GPIO_SET(sda);
 		}
+		usleep(1);
 		GPIO_SET(scl);
 		usleep(1);
 		GPIO_CLR(scl);
