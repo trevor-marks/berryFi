@@ -107,6 +107,7 @@ void io::i2c_byte(unsigned char data)
 	printf("data(%#x) ", data);
 	for (char bit = 0; bit < 8; bit++)
 	{
+		printf(" %d-", data & bitmask[bit]);
 		if (data & bitmask[bit] == 0)
 		{
 			printf("0");
