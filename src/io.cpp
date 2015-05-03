@@ -115,19 +115,19 @@ void io::i2c_byte(unsigned char data)
 		{
 			GPIO_SET(sda);
 		}
-		usleep(10);
+		usleep(2);
 		GPIO_SET(scl);
-		usleep(50);
+		usleep(5);
 		GPIO_CLR(scl);
-		usleep(50);
+		usleep(5);
 	}
 	// fake ack bit
 	GPIO_SET(sda);
-	usleep(10);
+	usleep(2);
 	GPIO_SET(scl);
-	usleep(50);
+	usleep(5);
 	GPIO_CLR(scl);
-	usleep(50);
+	usleep(5);
 }
 
 
