@@ -1,4 +1,3 @@
-#include "io.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -6,7 +5,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <time.h>
-
+#include "io.h"
 
 
 #define BCM2708_PERI_BASE  0x20000000
@@ -75,6 +74,9 @@ void io::init()
 
 	GPIO_SET(scl);
 	GPIO_SET(sda);
+
+	tim.tv_sec = 0;
+	tim.tv_nsec = 500;
 }
 
 
@@ -118,16 +120,16 @@ void io::i2c_byte(unsigned char data)
 		{
 			GPIO_SET(sda);
 		}
-		nanosleep(500);
+		nanosleep(&tim , &tim2);
 		GPIO_SET(scl);
-		nanosleep(500);
+		nanosleep(&tim , &tim2);
 		GPIO_CLR(scl);
-		nanosleep(500);
+		nanosleep(&tim , &tim2);
 	}
 	// fake ack bit
 	GPIO_SET(sda);
 	GPIO_SET(scl);
-	nanosleep(500);
+	nanosleep(&tim , &tim2);
 	GPIO_CLR(scl);
 }
 

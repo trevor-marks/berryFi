@@ -7,6 +7,9 @@ class io
 
 		void i2c_byte(unsigned char data);
 
+		struct timespec tim, tim2;
+
+
 	public:
 		int  mem_fd;
 		void *gpio_map;
