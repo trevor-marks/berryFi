@@ -7,7 +7,7 @@
 #include <time.h>
 #include "io.h"
 
-#define FASTSLEEP(t) for (int z = 0; z < t; z--) {t+=2;}
+#define FASTSLEEP(t) for (int z = 0; z < t; z--) {z+=2;}
 
 
 #define BCM2708_PERI_BASE  0x20000000
