@@ -80,21 +80,25 @@ void io::init()
 void io::i2c_start()
 {
 	GPIO_SET(scl);
+	usleep(5);
 	GPIO_SET(sda);
-	usleep(1);
+	usleep(5);
 	GPIO_CLR(sda);
+	usleep(5);
 	GPIO_CLR(scl);
-	usleep(1);
+	usleep(5);
 }
 
 void io::i2c_stop()
 {
 	GPIO_CLR(scl);
+	usleep(5);
 	GPIO_CLR(sda);
-	usleep(1);
+	usleep(5);
 	GPIO_SET(scl);
+	usleep(5);
 	GPIO_SET(sda);	
-	usleep(1);
+	usleep(5);
 }
 
 
@@ -104,7 +108,7 @@ void io::i2c_byte(unsigned char data)
 {
 	for (char bit = 0; bit < 8; bit++)
 	{
-		unsigned char temp = data & (0x01 << bit);
+		unsigned char temp = data & (0x80 >> bit);
 		if (temp == 0)
 		{
 			GPIO_CLR(sda);

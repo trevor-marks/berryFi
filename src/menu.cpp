@@ -11,7 +11,8 @@ void menu::init()
 	view.current = ARTIST;
 	view.scroll = &view.artist;
 
-	topScreen.start(0x3c);
+	//topScreen.start(0x3c);
+	topScreen.start(0x78);
 }
 
 
