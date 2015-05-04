@@ -7,6 +7,8 @@
 #include <time.h>
 #include "io.h"
 
+#define FASTSLEEP(t) for (int z = 0; z < t; t--) {t+=2;}
+
 
 #define BCM2708_PERI_BASE  0x20000000
 #define GPIO_BASE         (BCM2708_PERI_BASE + 0x200000)
@@ -120,16 +122,16 @@ void io::i2c_byte(unsigned char data)
 		{
 			GPIO_SET(sda);
 		}
-		nanosleep(&tim , &tim2);
+		FASTSLEEP(10000)
 		GPIO_SET(scl);
-		nanosleep(&tim , &tim2);
+		FASTSLEEP(10000)
 		GPIO_CLR(scl);
-		nanosleep(&tim , &tim2);
+		FASTSLEEP(10000)
 	}
 	// fake ack bit
 	GPIO_SET(sda);
 	GPIO_SET(scl);
-	nanosleep(&tim , &tim2);
+	FASTSLEEP(10000)
 	GPIO_CLR(scl);
 }
 
