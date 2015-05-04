@@ -82,7 +82,7 @@ void screen::writeBuffer()
 void screen::clearBuffer()
 {
 	// clear the buffer
-	memset(buffer, 0, 24);
+	memset(buffer, 0, 1024);
 }
 
 void screen::drawText(char *text, int x, int y, int font)
@@ -116,8 +116,8 @@ void screen::drawSprite(int x, int y, int compositeMode, int spriteIndex)
 	sprite = (char*)sprites[spriteIndex];
 
 	// get width / height
-	char width = sprite[0];
-	char height = sprite[1];
+	int width = sprite[0];
+	int height = sprite[1];
 
 	if (x > SCREEN_W - width || y > SCREEN_H - height) return;
 
