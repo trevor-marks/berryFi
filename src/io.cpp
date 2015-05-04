@@ -76,7 +76,7 @@ void io::init()
 	GPIO_SET(sda);
 
 	tim.tv_sec = 0;
-	tim.tv_nsec = 100;
+	tim.tv_nsec = 10;
 }
 
 
@@ -109,8 +109,7 @@ void io::i2c_stop()
 
 void io::i2c_byte(unsigned char data)
 {
-	char bit, pause;
-	for (bit = 0; bit < 8; bit++)
+	for (char bit = 0; bit < 8; bit++)
 	{
 		unsigned char temp = data & (0x80 >> bit);
 		if (temp == 0)
@@ -121,15 +120,16 @@ void io::i2c_byte(unsigned char data)
 		{
 			GPIO_SET(sda);
 		}
-		pause = sda;
+		nanosleep(&tim , &tim2);
 		GPIO_SET(scl);
-		pause = scl;
+		nanosleep(&tim , &tim2);
 		GPIO_CLR(scl);
+		nanosleep(&tim , &tim2);
 	}
 	// fake ack bit
 	GPIO_SET(sda);
 	GPIO_SET(scl);
-	pause = 0;                               // trivial pause to stop compiler from optimizing out the clock
+	nanosleep(&tim , &tim2);
 	GPIO_CLR(scl);
 }
 
