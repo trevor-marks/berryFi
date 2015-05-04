@@ -122,16 +122,16 @@ void io::i2c_byte(unsigned char data)
 		{
 			GPIO_SET(sda);
 		}
-		FASTSLEEP(10000)
+		FASTSLEEP(100)
 		GPIO_SET(scl);
-		FASTSLEEP(10000)
+		FASTSLEEP(100)
 		GPIO_CLR(scl);
-		FASTSLEEP(10000)
+		FASTSLEEP(100)
 	}
 	// fake ack bit
 	GPIO_SET(sda);
 	GPIO_SET(scl);
-	FASTSLEEP(10000)
+	FASTSLEEP(100)
 	GPIO_CLR(scl);
 }
 
