@@ -9,7 +9,6 @@
 #define SCREEN_W 128
 #define SCREEN_H 8    	// 8 bytes... aka 64 pix
 
-const char sprites_num = 11;
 const char * sprites[] = 
 { 
 	sprite_1, 
@@ -109,7 +108,7 @@ void screen::drawText(char *text, int x, int y, int font)
 
 void screen::drawSprite(int x, int y, int compositeMode, int spriteIndex)
 {
-	if (spriteIndex >= sprites_num) return;
+	if (spriteIndex >= SPRITE_MAX) return;
 
 	// get sprite pointer
 	char * sprite;

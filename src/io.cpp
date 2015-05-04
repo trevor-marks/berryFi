@@ -4,8 +4,12 @@
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
-#include <time.h>
+
 #include "io.h"
+#include "screen.h"
+#include "menu.h"
+
+extern menu Menu;
 
 #define FASTSLEEP(t) for (int z = 0; z < t; z--) {z+=2;}
 
@@ -15,8 +19,6 @@
 #define PAGE_SIZE         (4*1024)
 #define BLOCK_SIZE        (4*1024)
 
-#define scl 6
-#define sda 5
 
 
 // GPIO setup macros. Always use INP_GPIO(x) before using OUT_GPIO(x) or SET_GPIO_ALT(x,y)
@@ -29,8 +31,9 @@
  
 #define GET_GPIO(g) (*(gpio+13)&(1<<g)) // 0 if LOW, (1<<g) if HIGH
  
-#define GPIO_PULL *(gpio+37) // Pull up/pull down
+#define GPIO_PULL(g) *(gpio+37)&=(1<<g) // Pull up/pull down
 #define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
+
 
 
 void io::init()
@@ -77,8 +80,59 @@ void io::init()
 	GPIO_SET(scl);
 	GPIO_SET(sda);
 
-	tim.tv_sec = 0;
-	tim.tv_nsec = 10;
+	printf("setting up button pins...\n");
+	// setup button GPIO pins
+	for (char pin = 0; pin < BUTTONS_MAX; pin++)
+	{
+		INP_GPIO(button_pin[pin]);
+		GPIO_PULL(button_pin[pin]);
+		button_time[pin] = 0;
+	}
+
+}
+
+
+
+
+char io::io_pollButtons()
+{
+	printf("B: ");
+	char retval = 0;
+	for (char pin = 0; pin < BUTTONS_MAX; pin++)
+	{
+		
+		if (GET_GPIO(button_pin[pin]))
+		{
+			//> Pressed
+			//  incramment timer
+			button_time[pin]++;
+			printf("0");
+		}
+		else
+		{
+			//> Not Pressed
+			//  check length of press
+
+			if (button_time[pin] > BUTTON_HOLD)
+			{
+				// short click
+				retval = 1;
+				printf("1");
+				Menu.pushButton(pin, CLICK);
+			}
+			else if (button_time[pin] > BUTTON_CLICK)
+			{
+				// long click (hold)
+				retval = 2;
+				printf("2");
+				Menu.pushButton(pin, HOLD);
+			}
+			button_time[pin] = 0;
+
+		}
+	}
+	printf("\n");
+	return retval;
 }
 
 

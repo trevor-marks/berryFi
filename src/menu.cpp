@@ -1,29 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "menu.h"
 
+#include "menu.h"
 
 
 void menu::init()
 {
-	printf("------\nmenu init...\n");
 	// default view init
 	view.current = ARTIST;
 	view.scroll = &view.artist;
 
 	//topScreen.start(0x3c);
 	topScreen.start(0x78);
+
+	// draw logo
+	topScreen.drawSprite(0, 0, SPRITE_MODE_REPLACE, SPRITE_BERRYFI);
+	topScreen.updateScreen();
 }
 
 
-void menu::exit()
+void menu::off()
 {
+	// draw logo so it will display on power-on
+	topScreen.drawSprite(0, 0, SPRITE_MODE_REPLACE, SPRITE_BERRYFI);
+	topScreen.updateScreen();
 	topScreen.stop();
+	exit(0);
 }
 
 void menu::update()
 {
-	system("clear");
 	switch (state)
 	{
 		//--------------------------------------------------------------------------------
@@ -34,33 +40,39 @@ void menu::update()
 
 		//--------------------------------------------------------------------------------
 		case FUNC:
-			printf("screen: funciton\n");
-			topScreen.drawText("I love Olivia!!!\n", 0, 0, 1);
+			printf("screen: function\n");
+			topScreen.drawText("screen: function control\n", 0, 0, 1);
 			topScreen.drawText("SO MUCH  <3\n", 0, 1, 2);
 			break;
 
 		//--------------------------------------------------------------------------------
 		case SETT:
 			printf("screen: settings\n");
-			topScreen.drawSprite(0, 0, 0, 6);
+			topScreen.drawText("screen: settings\n", 0, 0, 1);
 			break;
 
 		//--------------------------------------------------------------------------------
 		case LAPL:
 			printf("screen: load a playlist\n");
-
+			topScreen.drawText("screen: load a playlist\n", 0, 0, 1);
 			break;
 
 		//--------------------------------------------------------------------------------
 		case ELPL:
 			printf("screen: edit Queue\n");
-
+			topScreen.drawText("screen: edit Queue\n", 0, 0, 1);
 			break;
 
 		//--------------------------------------------------------------------------------
 		case EPLO:
 			printf("screen: edit playlist order\n");
+			topScreen.drawText("screen: edit playlist order\n", 0, 0, 1);
+			break;
 
+		//--------------------------------------------------------------------------------
+		case SHUTDOWN:
+			printf("Program shutting down.\n");
+			off();
 			break;
 
 		//--------------------------------------------------------------------------------
@@ -75,9 +87,6 @@ void menu::update()
 
 void menu::pushButton(_button button, _buttonMode mode)
 {
-	if (button == NOP) return;
-	_menuState NS = state;
-
 	// dedicated buttons here
 	if (button == PLAY)
 	{
@@ -170,7 +179,7 @@ void menu::pushButton(_button button, _buttonMode mode)
 			if (button == MENU)
 			{
 				if (mode == CLICK)			NS = MAIN;
-				//if (mode == HOLD)			// --
+				if (mode == HOLD)			NS = SHUTDOWN;
 			}
 			if (button == ADD)
 			{
