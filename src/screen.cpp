@@ -35,7 +35,7 @@ void screen::start(unsigned char addr)
 	address = addr;
 	ioDevice.i2c_write_command(address, 0xAE); //display off
 	ioDevice.i2c_write_command(address, 0x00); //Set Memory Addressing Mode
-	ioDevice.i2c_write_command(address, 0x10); //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
+	ioDevice.i2c_write_command(address, 0x00); //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
 	ioDevice.i2c_write_command(address, 0x40); //Set Page Start Address for Page Addressing Mode,0-7
 	ioDevice.i2c_write_command(address, 0x81); //Set COM Output Scan Direction
 	ioDevice.i2c_write_command(address, 0xCF); //---set low column address

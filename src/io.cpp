@@ -76,7 +76,7 @@ void io::init()
 	GPIO_SET(sda);
 
 	tim.tv_sec = 0;
-	tim.tv_nsec = 500;
+	tim.tv_nsec = 100;
 }
 
 
