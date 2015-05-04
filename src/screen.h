@@ -1,6 +1,3 @@
-
-#include "sprites.h"
-
 class screen
 {
 	private:
