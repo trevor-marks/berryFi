@@ -5,6 +5,7 @@
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <time.h>
 
 
 
@@ -80,25 +81,25 @@ void io::init()
 void io::i2c_start()
 {
 	GPIO_SET(scl);
-	usleep(5);
+	usleep(1);
 	GPIO_SET(sda);
-	usleep(5);
+	usleep(1);
 	GPIO_CLR(sda);
-	usleep(5);
+	usleep(1);
 	GPIO_CLR(scl);
-	usleep(5);
+	usleep(1);
 }
 
 void io::i2c_stop()
 {
 	GPIO_CLR(scl);
-	usleep(5);
+	usleep(1);
 	GPIO_CLR(sda);
-	usleep(5);
+	usleep(1);
 	GPIO_SET(scl);
-	usleep(5);
+	usleep(1);
 	GPIO_SET(sda);	
-	usleep(5);
+	usleep(1);
 }
 
 
@@ -117,22 +118,21 @@ void io::i2c_byte(unsigned char data)
 		{
 			GPIO_SET(sda);
 		}
-		usleep(1);
+		nanosleep(500);
 		GPIO_SET(scl);
-		usleep(1);
+		nanosleep(500);
 		GPIO_CLR(scl);
-		usleep(1);
+		nanosleep(500);
 	}
 	// fake ack bit
 	GPIO_SET(sda);
 	GPIO_SET(scl);
-	usleep(1);
+	nanosleep(500);
 	GPIO_CLR(scl);
 }
 
 void io::i2c_setPos(unsigned char addr, unsigned char x, unsigned char y)
 {
-	printf("i2c.setPos\n");
 	i2c_start();
 	i2c_byte(addr);
 	i2c_byte(0x00);
@@ -149,7 +149,6 @@ void io::i2c_setPos(unsigned char addr, unsigned char x, unsigned char y)
 //----------------------------------------------------------
 void io::i2c_write(unsigned char addr, char * buf, int length)
 {
-	printf("i2c.write\n");
 	i2c_start();
 	i2c_byte(addr);                                      // Write address
 	i2c_byte(0x40);                                      // Write data command
@@ -160,7 +159,6 @@ void io::i2c_write(unsigned char addr, char * buf, int length)
 
 void io::i2c_write_command(unsigned char addr, unsigned char command)
 {
-	printf("i2c.command\n");
 	i2c_start();
 	i2c_byte(addr);
 	i2c_byte(0x00);                                      // write a zero to init a command

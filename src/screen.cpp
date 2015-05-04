@@ -73,7 +73,7 @@ void screen::stop()
 void screen::writeBuffer()
 {
 	ioDevice.i2c_setPos(address, 0, 0);
-	ioDevice.i2c_write(address, &buffer[0][0], 96);
+	ioDevice.i2c_write(address, &buffer[0][0], 1024);
 }
 
 void screen::clearBuffer()

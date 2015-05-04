@@ -36,6 +36,7 @@ void menu::update()
 		case FUNC:
 			printf("screen: funciton\n");
 			topScreen.drawText("I love Olivia!!!\n", 0, 0, 1);
+			topScreen.drawText("SO MUCH  <3\n", 0, 1, 2);
 			break;
 
 		//--------------------------------------------------------------------------------
