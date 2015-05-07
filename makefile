@@ -21,7 +21,7 @@ vpath %.o $(PATH_OBJ)
 vpath %.h $(PATH_SRC)
 vpath %.cpp $(PATH_SRC)
 
-all: pre-build main-build post-build
+all: pre-build main-build
 
 pre-build:
 	clear
@@ -38,8 +38,6 @@ main-build: $(OBJECTS) $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(addprefix $(PATH_OBJ),$(OBJECTS)) $(FLAGS) -o $@ $(LIB)
 
-post-build:
-	cp $(EXECUTABLE) /media/sf_vmshare/$(EXECUTABLE)
 
 
 .PHONY: all

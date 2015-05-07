@@ -6,7 +6,6 @@
 #include <unistd.h>
 
 #include "io.h"
-#include "screen.h"
 #include "menu.h"
 
 extern menu Menu;
@@ -31,7 +30,7 @@ extern menu Menu;
  
 #define GET_GPIO(g) (*(gpio+13)&(1<<g)) // 0 if LOW, (1<<g) if HIGH
  
-#define GPIO_PULL(g) *(gpio+37)&=(1<<g) // Pull up/pull down
+//#define GPIO_PULL(g) *(gpio+37)&=(1<<g) // Pull up/pull down
 #define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
 
 
@@ -85,7 +84,7 @@ void io::init()
 	for (char pin = 0; pin < BUTTONS_MAX; pin++)
 	{
 		INP_GPIO(button_pin[pin]);
-		GPIO_PULL(button_pin[pin]);
+		//GPIO_PULL(button_pin[pin]);
 		button_time[pin] = 0;
 	}
 
@@ -96,42 +95,45 @@ void io::init()
 
 char io::io_pollButtons()
 {
-	printf("B: ");
+	//printf("B: ");
 	char retval = 0;
 	for (char pin = 0; pin < BUTTONS_MAX; pin++)
 	{
 		
-		if (GET_GPIO(button_pin[pin]))
+		if (!GET_GPIO(button_pin[pin]))
 		{
 			//> Pressed
 			//  incramment timer
 			button_time[pin]++;
-			printf("0");
+			if (button_time[pin] == BUTTON_HOLD)
+			{
+				// short click
+				retval = 2;
+				//printf("2");
+				Menu.pushButton(pin, BTN_M_HOLD);
+				//button_time[pin] = 0;
+			}
+			//else
+				//printf("+");
 		}
 		else
 		{
 			//> Not Pressed
 			//  check length of press
-
-			if (button_time[pin] > BUTTON_HOLD)
-			{
-				// short click
-				retval = 1;
-				printf("1");
-				Menu.pushButton(pin, CLICK);
-			}
-			else if (button_time[pin] > BUTTON_CLICK)
+			if (button_time[pin] > BUTTON_CLICK && button_time[pin] < BUTTON_HOLD)
 			{
 				// long click (hold)
-				retval = 2;
-				printf("2");
-				Menu.pushButton(pin, HOLD);
+				retval = 1;
+				//printf("1");
+				Menu.pushButton(pin, BTN_M_CLICK);
 			}
+			//else
+				//printf("0");
 			button_time[pin] = 0;
 
 		}
 	}
-	printf("\n");
+	//printf("\n");
 	return retval;
 }
 
@@ -139,25 +141,25 @@ char io::io_pollButtons()
 void io::i2c_start()
 {
 	GPIO_SET(scl);
-	usleep(1);
+	FASTSLEEP(500)
 	GPIO_SET(sda);
-	usleep(1);
+	FASTSLEEP(500)
 	GPIO_CLR(sda);
-	usleep(1);
+	FASTSLEEP(500)
 	GPIO_CLR(scl);
-	usleep(1);
+	FASTSLEEP(500)
 }
 
 void io::i2c_stop()
 {
 	GPIO_CLR(scl);
-	usleep(1);
+	FASTSLEEP(500)
 	GPIO_CLR(sda);
-	usleep(1);
+	FASTSLEEP(500)
 	GPIO_SET(scl);
-	usleep(1);
+	FASTSLEEP(500)
 	GPIO_SET(sda);	
-	usleep(1);
+	FASTSLEEP(500)
 }
 
 

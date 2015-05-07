@@ -1,9 +1,11 @@
 #define scl 2
 #define sda 3
 #define BUTTONS_MAX 8
-#define BUTTON_CLICK 10
-#define BUTTON_HOLD 1000
+#define BUTTON_CLICK 5
+#define BUTTON_HOLD 100
 #define BUTTON_POLL 10000
+
+static char const button_pin[] = {5, 6, 25, 8, 13, 19, 7, 1};
 
 class io
 {
@@ -14,8 +16,8 @@ class io
 		void i2c_byte(unsigned char data);
 
 
-		int button_time[buttons_max];
-		static char const button_pin[] = {5, 6, 25, 8, 13, 19, 7, 1}
+		int button_time[BUTTONS_MAX];
+		
 		//  5  XXXX  25
 		//  6  XXXX   8
 

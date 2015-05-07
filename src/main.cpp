@@ -1,9 +1,10 @@
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
 #include "main.h"
 #include "menu.h"
 #include "io.h"
-
-#include <stdio.h>
-#include <string.h>
 
 menu Menu;
 io ioDevice;
@@ -15,7 +16,7 @@ int main()
 
 	printf("init complete...\n");
 
-	//usleep(1000000);
+	usleep(1000000);
 
 	while (1)
 	{

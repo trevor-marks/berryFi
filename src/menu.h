@@ -1,8 +1,20 @@
 #include "screen.h"
 
 enum _menuState {MAIN, FUNC, SETT, LAPL, ELPL, EPLO, SHUTDOWN};
-enum _button {PLAY, MENU, NEXT, PREV, UP, DOWN, ADD, SUB};
-enum _buttonMode {NONE, CLICK, HOLD};
+
+#define BTN_PLAY 0
+#define BTN_FUNC 1
+#define BTN_NEXT 2
+#define BTN_PREV 3
+#define BTN_UP   4 
+#define BTN_DOWN 5
+#define BTN_ADD  6
+#define BTN_SUB  7
+
+#define BTN_M_NONE  0
+#define BTN_M_CLICK 1
+#define BTN_M_HOLD  2
+
 enum _view {ARTIST, ALBUM, SONG, PLAYLIST};
 
 struct _scroll
@@ -30,7 +42,7 @@ class menu
 
 	public:
 		void init();
-		void pushButton(_button button, _buttonMode mode);
+		void pushButton(char button, char mode);
 		void update();
 		void off();
 

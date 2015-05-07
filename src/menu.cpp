@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 #include "menu.h"
 
 
@@ -35,38 +36,37 @@ void menu::update()
 		//--------------------------------------------------------------------------------
 		case MAIN:
 			printf("screen: main\n");
-			topScreen.drawText("screen: main\n", 0, 0, 1);
+			topScreen.drawText("main\n", 0, 0, 2);
 			break;
 
 		//--------------------------------------------------------------------------------
 		case FUNC:
 			printf("screen: function\n");
-			topScreen.drawText("screen: function control\n", 0, 0, 1);
-			topScreen.drawText("SO MUCH  <3\n", 0, 1, 2);
+			topScreen.drawText("func control\n", 0, 0, 2);
 			break;
 
 		//--------------------------------------------------------------------------------
 		case SETT:
 			printf("screen: settings\n");
-			topScreen.drawText("screen: settings\n", 0, 0, 1);
+			topScreen.drawText("settings\n", 0, 0, 2);
 			break;
 
 		//--------------------------------------------------------------------------------
 		case LAPL:
 			printf("screen: load a playlist\n");
-			topScreen.drawText("screen: load a playlist\n", 0, 0, 1);
+			topScreen.drawText("load a playlist\n", 0, 0, 2);
 			break;
 
 		//--------------------------------------------------------------------------------
 		case ELPL:
 			printf("screen: edit Queue\n");
-			topScreen.drawText("screen: edit Queue\n", 0, 0, 1);
+			topScreen.drawText("edit Queue\n", 0, 0, 2);
 			break;
 
 		//--------------------------------------------------------------------------------
 		case EPLO:
 			printf("screen: edit playlist order\n");
-			topScreen.drawText("screen: edit playlist order\n", 0, 0, 1);
+			topScreen.drawText("EPLO\n", 0, 0, 2);
 			break;
 
 		//--------------------------------------------------------------------------------
@@ -85,25 +85,44 @@ void menu::update()
 }
 
 
-void menu::pushButton(_button button, _buttonMode mode)
+void menu::pushButton(char button, char mode)
 {
+	_menuState NS = state;
+	FILE *fp;
+
 	// dedicated buttons here
-	if (button == PLAY)
+	if (button == BTN_PLAY)
 	{
-		//if (mode == CLICK)		//> PLAY / PAUSE
-		//if (mode == HOLD)		//> STOP
+		if (mode == BTN_M_CLICK)		//> PLAY / PAUSE
+		{
+			fp = popen("mpc play", "r");
+			pclose(fp);
+		}
+		if (mode == BTN_M_HOLD)		//> STOP
+		{
+			fp = popen("mpc stop", "r");
+			pclose(fp);
+		}
 	}
 
-	if (button == NEXT)
+	if (button == BTN_NEXT)
 	{
-		//if (mode == CLICK)		//> NEXT TRACK
-		//if (mode == HOLD)		//> --
+		if (mode == BTN_M_CLICK)		//> NEXT TRACK
+		{
+			fp = popen("mpc next", "r");
+			pclose(fp);
+		}
+		//if (mode == BTN_M_HOLD)		//> --
 	}
 
-	if (button == PREV)
+	if (button == BTN_PREV)
 	{
-		//if (mode == CLICK)		//> PREV TRACK
-		//if (mode == HOLD)		//> --
+		if (mode == BTN_M_CLICK)		//> PREV TRACK
+		{
+			fp = popen("mpc prev", "r");
+			pclose(fp);
+		}
+		//if (mode == BTN_M_HOLD)		//> --
 	}
 
 
@@ -112,193 +131,197 @@ void menu::pushButton(_button button, _buttonMode mode)
 	{
 		//--------------------------------------------------------------------------------
 		case MAIN:
-			if (button == MENU)
+			if (button == BTN_FUNC)
 			{
-				//if (mode == CLICK)		//> --
-				if (mode == HOLD) 			NS = FUNC;
+				//if (mode == BTN_M_CLICK)		//> --
+				if (mode == BTN_M_HOLD) 		NS = FUNC;
 			}
-			if (button == ADD)
+			if (button == BTN_ADD)
 			{
-				//if (mode == CLICK)		//> Add track/album/artist to playlist
-				//if (mode == HOLD) 		//> Add track/album/artist to front of playlist and play NOW
+				//if (mode == BTN_M_CLICK)		//> Add track/album/artist to playlist
+				//if (mode == BTN_M_HOLD) 		//> Add track/album/artist to front of playlist and play NOW
 			}
-			if (button == SUB)
+			if (button == BTN_SUB)
 			{
-				//if (mode == CLICK)		//> Remove track/album/artist from playlist
-				//if (mode == HOLD) 		//> --
+				//if (mode == BTN_M_CLICK)		//> Remove track/album/artist from playlist
+				//if (mode == BTN_M_HOLD) 		//> --
 			}
-			if (button == UP)
+			if (button == BTN_UP)
 			{
-				if (mode == CLICK)			//> scroll up
+				if (mode == BTN_M_CLICK)		//> scroll up
 				{
 					if (view.scroll->index < view.scroll->size - 1) view.scroll->index++;
 				}
-				//if (mode == HOLD) 		//> browse out to artist/album list
+				//if (mode == BTN_M_HOLD) 		//> browse out to artist/album list
 			}
-			if (button == DOWN)
+			if (button == BTN_DOWN)
 			{
-				if (mode == CLICK)			//> scroll down
+				if (mode == BTN_M_CLICK)		//> scroll down
 				{
 					if (view.scroll->index > 0) view.scroll->index--;
 				}
-				//if (mode == HOLD) 		//> browse into album/track list
+				//if (mode == BTN_M_HOLD) 		//> browse into album/track list
 			}
 			break;
 
 		//--------------------------------------------------------------------------------
 		case FUNC:
-			if (button == MENU)
+			if (button == BTN_FUNC)
 			{
-				if (mode == CLICK)			NS = MAIN;
-				if (mode == HOLD)			NS = SETT;
+				if (mode == BTN_M_CLICK)		NS = MAIN;
+				if (mode == BTN_M_HOLD)			NS = SETT;
 			}
-			if (button == ADD)
+			if (button == BTN_ADD)
 			{
-				//if (mode == CLICK)		//> Save Playlist
-				//if (mode == HOLD) 		//> Save Playlist and empty live playlist
+				//if (mode == BTN_M_CLICK)		//> Save Playlist
+				//if (mode == BTN_M_HOLD) 		//> Save Playlist and empty live playlist
 			}
-			if (button == SUB)
+			if (button == BTN_SUB)
 			{
-				if (mode == CLICK)			NS = LAPL;
-				if (mode == HOLD) 			NS = ELPL;
+				if (mode == BTN_M_CLICK)		NS = LAPL;
+				if (mode == BTN_M_HOLD) 		NS = ELPL;
 			}
-			if (button == UP)
+			if (button == BTN_UP)
 			{
-				//if (mode == CLICK)		//> toggle shuffle
-				//if (mode == HOLD) 		//> --
+				//if (mode == BTN_M_CLICK)		//> toggle shuffle
+				//if (mode == BTN_M_HOLD) 		//> --
 			}
-			if (button == DOWN)
+			if (button == BTN_DOWN)
 			{
-				//if (mode == CLICK)		//> toggle repeat
-				//if (mode == HOLD) 		//> --
+				//if (mode == BTN_M_CLICK)		//> toggle repeat
+				//if (mode == BTN_M_HOLD) 		//> --
 			}
 			break;
 
 		//--------------------------------------------------------------------------------
 		case SETT:
-			if (button == MENU)
+			if (button == BTN_FUNC)
 			{
-				if (mode == CLICK)			NS = MAIN;
-				if (mode == HOLD)			NS = SHUTDOWN;
+				if (mode == BTN_M_CLICK)		NS = MAIN;
+				if (mode == BTN_M_HOLD)			NS = SHUTDOWN;
 			}
-			if (button == ADD)
+			if (button == BTN_ADD)
 			{
-				//if (mode == CLICK)		//> Rescan Library
-				//if (mode == HOLD) 		//> --
+				if (mode == BTN_M_CLICK)		//> Rescan Library
+				{
+					fp = popen("mpc update", "r");
+					pclose(fp);
+				}
+				//if (mode == BTN_M_HOLD) 		//> --
 			}
-			if (button == SUB)
+			if (button == BTN_SUB)
 			{
-				//if (mode == CLICK)		//> Toggle fade effects
-				//if (mode == HOLD) 		//> --
+				//if (mode == BTN_M_CLICK)		//> Toggle fade effects
+				//if (mode == BTN_M_HOLD) 		//> --
 			}
-			if (button == UP)
+			if (button == BTN_UP)
 			{
-				//if (mode == CLICK)		//> Cycle power save timer setting
-				//if (mode == HOLD) 		//> --
+				//if (mode == BTN_M_CLICK)		//> Cycle power save timer setting
+				//if (mode == BTN_M_HOLD) 		//> --
 			}
-			if (button == DOWN)
+			if (button == BTN_DOWN)
 			{
-				//if (mode == CLICK)		//> --
-				//if (mode == HOLD) 		//> --
+				//if (mode == BTN_M_CLICK)		//> --
+				//if (mode == BTN_M_HOLD) 		//> --
 			}
 			break;
 
 		//--------------------------------------------------------------------------------
 		case LAPL:
-			if (button == MENU)
+			if (button == BTN_FUNC)
 			{
-				if (mode == CLICK)			NS = MAIN;
-				//if (mode == HOLD)			// --
+				if (mode == BTN_M_CLICK)		NS = MAIN;
+				//if (mode == BTN_M_HOLD)		// --
 			}
-			if (button == ADD)
+			if (button == BTN_ADD)
 			{
-				//if (mode == CLICK)		//> Enque this playlist to live playlist
-				//if (mode == HOLD) 		//> Replace current live playlist with this one
+				//if (mode == BTN_M_CLICK)		//> Enque this playlist to live playlist
+				//if (mode == BTN_M_HOLD) 		//> Replace current live playlist with this one
 			}
-			if (button == SUB)
+			if (button == BTN_SUB)
 			{
-				//if (mode == CLICK)		//> --
-				//if (mode == HOLD) 		//> Delete this playlist
+				//if (mode == BTN_M_CLICK)		//> --
+				//if (mode == BTN_M_HOLD) 		//> Delete this playlist
 			}
-			if (button == UP)
+			if (button == BTN_UP)
 			{
-				//if (mode == CLICK)		//> scroll selection up
-				//if (mode == HOLD) 		//> Top of list
+				//if (mode == BTN_M_CLICK)		//> scroll selection up
+				//if (mode == BTN_M_HOLD) 		//> Top of list
 			}
-			if (button == DOWN)
+			if (button == BTN_DOWN)
 			{
-				//if (mode == CLICK)		//> scroll selection down
-				//if (mode == HOLD) 		//> Bottom of list
+				//if (mode == BTN_M_CLICK)		//> scroll selection down
+				//if (mode == BTN_M_HOLD) 		//> Bottom of list
 			}
 			break;
 
 		//--------------------------------------------------------------------------------
 		case ELPL:
-			if (button == MENU)
+			if (button == BTN_FUNC)
 			{
-				if (mode == CLICK)			NS = MAIN;
-				//if (mode == HOLD)			// --
+				if (mode == BTN_M_CLICK)		NS = MAIN;
+				//if (mode == BTN_M_HOLD)		// --
 			}
-			if (button == ADD)
+			if (button == BTN_ADD)
 			{
-				if (mode == CLICK)			
+				if (mode == BTN_M_CLICK)			
 				{
 					//> select current song
 					NS = EPLO;
 				}
-				//if (mode == HOLD) 		//> --
+				//if (mode == BTN_M_HOLD) 		//> --
 			}
-			if (button == SUB)
+			if (button == BTN_SUB)
 			{
-				//if (mode == CLICK)		//> Remove Song from live playlist
-				//if (mode == HOLD) 		//> empty live playlist
+				//if (mode == BTN_M_CLICK)		//> Remove Song from live playlist
+				//if (mode == BTN_M_HOLD) 		//> empty live playlist
 			}
-			if (button == UP)
+			if (button == BTN_UP)
 			{
-				//if (mode == CLICK)		//> scroll selection up
-				//if (mode == HOLD) 		//> to top of list
+				//if (mode == BTN_M_CLICK)		//> scroll selection up
+				//if (mode == BTN_M_HOLD) 		//> to top of list
 			}
-			if (button == DOWN)
+			if (button == BTN_DOWN)
 			{
-				//if (mode == CLICK)		//> scroll selection down
-				//if (mode == HOLD) 		//> to bottom of list
+				//if (mode == BTN_M_CLICK)		//> scroll selection down
+				//if (mode == BTN_M_HOLD) 		//> to bottom of list
 			}
 			break;
 
 		//--------------------------------------------------------------------------------
 		case EPLO:
-			if (button == MENU)
+			if (button == BTN_FUNC)
 			{
-				if (mode == CLICK)			NS = MAIN;
-				//if (mode == HOLD)			// --
+				if (mode == BTN_M_CLICK)		NS = MAIN;
+				//if (mode == BTN_M_HOLD)		// --
 			}
-			if (button == ADD)
+			if (button == BTN_ADD)
 			{
-				if (mode == CLICK)			
+				if (mode == BTN_M_CLICK)			
 				{
 					//> drop song at new location
 					NS = ELPL;
 				}
-				//if (mode == HOLD) 		//> --
+				//if (mode == BTN_M_HOLD) 		//> --
 			}
-			if (button == SUB)
+			if (button == BTN_SUB)
 			{
-				if (mode == CLICK)			
+				if (mode == BTN_M_CLICK)			
 				{
 					//> remove current song
 					NS = ELPL;
 				}
-				//if (mode == HOLD) 		//> --
+				//if (mode == BTN_M_HOLD) 		//> --
 			}
-			if (button == UP)
+			if (button == BTN_UP)
 			{
-				//if (mode == CLICK)		//> drag song up
-				//if (mode == HOLD) 		//> drag song to top of playlist
+				//if (mode == BTN_M_CLICK)		//> drag song up
+				//if (mode == BTN_M_HOLD) 		//> drag song to top of playlist
 			}
-			if (button == DOWN)
+			if (button == BTN_DOWN)
 			{
-				//if (mode == CLICK)		//> drag song down
-				//if (mode == HOLD) 		//> drag song to bottom of playlist
+				//if (mode == BTN_M_CLICK)		//> drag song down
+				//if (mode == BTN_M_HOLD) 		//> drag song to bottom of playlist
 			}
 			break;
 
